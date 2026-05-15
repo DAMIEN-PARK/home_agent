@@ -15,6 +15,8 @@ class User(Base, TimestampMixin):
     id: Mapped[UUID] = mapped_column(PG_UUID(as_uuid=True), primary_key=True, default=uuid4)
     name: Mapped[str] = mapped_column(String(120), nullable=False)
     email: Mapped[str | None] = mapped_column(String(255), nullable=True, unique=True)
+    # OAuth tokens per external service: {"google": {"refresh_token": "..."}}
+    external_tokens: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=dict)
 
     sessions: Mapped[list["Session"]] = relationship(back_populates="user")
 

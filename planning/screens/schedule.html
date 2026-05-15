@@ -133,6 +133,43 @@
         </table>
       </div>
     </div>
+
+    <div class="domain-chat" style="margin-top:18px">
+      <div class="dc-header">
+        <h2><span class="tag accent">schedule_agent</span> 도메인 챗</h2>
+        <span class="dc-scope">scope: schedule.* · calendar MCP only</span>
+      </div>
+      <div class="dc-thread">
+        <div class="msg user">
+          <div class="who">YOU · 08:42</div>
+          <div class="body">
+            <p>다음 주 회의 가능한 2시간 슬롯 찾아줘. 오후 선호.</p>
+            <div class="edit-row"><a href="#">✎ 수정</a> · <a href="#">↺ 재실행</a></div>
+          </div>
+        </div>
+        <div class="msg tool">
+          <div class="who">TOOL</div>
+          <div class="body">schedule_agent.find_slot(week="2026-W21", duration=120, prefer="afternoon") → [화 14:00–16:00, 목 15:30–17:30]</div>
+        </div>
+        <div class="msg">
+          <div class="who">AGENT · 08:42</div>
+          <div class="body">
+            <p>두 슬롯 비어 있어요 — <strong>화 14:00–16:00</strong>, 목 15:30–17:30. 어떤 걸로 잡을까요?</p>
+          </div>
+        </div>
+      </div>
+      <div class="dc-input">
+        <textarea placeholder="이 도메인에만 묻기 — 일정·비전·목표 (예: '이번 주 운동 일정 추가')"></textarea>
+        <button class="btn">+ 첨부</button>
+        <button class="btn primary">전송</button>
+      </div>
+      <div class="dc-suggests">
+        <span class="label">추천:</span>
+        <span class="dc-suggest">이번 주 일정 요약</span>
+        <span class="dc-suggest">5월 목표 진척도</span>
+        <span class="dc-suggest">반복 일정 추가</span>
+      </div>
+    </div>
     </div><!-- /left column -->
 
     <aside class="rail">

@@ -119,6 +119,43 @@
         <li>마이너스통장 잔액 ₩2M 유지 중 — 이자 5.4%. 비상금 ₩5M로 상환 가능.</li>
       </ul>
     </div>
+
+    <div class="domain-chat" style="margin-top:18px">
+      <div class="dc-header">
+        <h2><span class="tag accent">finance_agent</span> 도메인 챗</h2>
+        <span class="dc-scope">scope: finance.* · finance MCP only</span>
+      </div>
+      <div class="dc-thread">
+        <div class="msg user">
+          <div class="who">YOU · 17:05</div>
+          <div class="body">
+            <p>해외주식 평가액 갱신하고 순자산 다시 계산해줘.</p>
+            <div class="edit-row"><a href="#">✎ 수정</a> · <a href="#">↺ 재실행</a></div>
+          </div>
+        </div>
+        <div class="msg tool">
+          <div class="who">TOOL</div>
+          <div class="body">finance_agent.update_valuation(account="해외주식", as_of="2026-05-15") · net_worth_snapshot() → ₩52,420,000 (+₩418k vs 4/30)</div>
+        </div>
+        <div class="msg">
+          <div class="who">AGENT · 17:05</div>
+          <div class="body">
+            <p>해외주식 +1.8% MTD 반영. 순자산 <strong>₩52,420,000</strong>으로 갱신했어요. 현금 비중이 여전히 53.6%라 목표(30%) 대비 +23.6%p.</p>
+          </div>
+        </div>
+      </div>
+      <div class="dc-input">
+        <textarea placeholder="이 도메인에만 묻기 — 자산·투자 (예: 'VOO 비중 늘리려면 얼마 필요해?')"></textarea>
+        <button class="btn">+ 보유 추가</button>
+        <button class="btn primary">전송</button>
+      </div>
+      <div class="dc-suggests">
+        <span class="label">추천:</span>
+        <span class="dc-suggest">리밸런싱 제안</span>
+        <span class="dc-suggest">순자산 추이 6개월</span>
+        <span class="dc-suggest">마통 상환 시뮬</span>
+      </div>
+    </div>
   </main>
 </div>
 </body>
