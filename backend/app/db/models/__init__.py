@@ -1,5 +1,6 @@
 from app.db.models.core import AgentRun, Message, Session, User
 from app.db.models.memory import MemoryEntry
+from app.db.models.schedule import Event
 from app.db.models.todo import Project, Task, TaskContext
 
 __all__ = [
@@ -8,6 +9,7 @@ __all__ = [
     "Message",
     "AgentRun",
     "MemoryEntry",
+    "Event",
     "Project",
     "Task",
     "TaskContext",
