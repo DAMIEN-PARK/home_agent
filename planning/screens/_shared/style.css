@@ -409,6 +409,260 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
 }
 .kcard .row { display: flex; gap: 6px; margin-top: 6px; align-items: center; }
 
+/* ---------- Timeline rail (schedule · vision log) ---------- */
+.with-rail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 28px;
+  align-items: start;
+}
+.rail {
+  position: sticky;
+  top: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.rail-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.rail-head h2 {
+  margin: 0;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.rail-head .rail-now {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.rail-body {
+  position: relative;
+  overflow-y: auto;
+  padding: 14px 14px 18px 18px;
+  flex: 1;
+}
+.rail-body::before {
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.rail-item {
+  position: relative;
+  padding: 6px 0 10px 22px;
+  font-size: 12.5px;
+  color: var(--text);
+}
+.rail-item .stamp {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
+  display: block;
+  margin-bottom: 2px;
+}
+.rail-item .label { line-height: 1.35; }
+.rail-item::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 11px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+}
+.rail-item.past { color: var(--text-muted); }
+.rail-item.past .stamp { color: var(--text-faint); }
+.rail-item.past::before { background: var(--border); border-color: var(--border-strong); }
+.rail-item.future::before {
+  border-style: dashed;
+  border-color: var(--text-faint);
+}
+.rail-item.milestone::before {
+  border-radius: 2px;
+  background: var(--accent);
+  border-color: var(--accent);
+  width: 9px;
+  height: 9px;
+  left: 5px;
+  top: 10px;
+}
+.rail-item.milestone .label { font-weight: 600; }
+.rail-item.warn::before {
+  background: var(--warning);
+  border-color: var(--warning);
+}
+.rail-now-row {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(var(--surface) 70%, rgba(255,255,255,0));
+  padding: 6px 0 12px 22px;
+  margin: 2px 0;
+  z-index: 1;
+}
+.rail-now-row::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 10px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.rail-now-row::after {
+  content: "";
+  position: absolute;
+  left: 28px;
+  right: 0;
+  top: 15px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.35;
+}
+.rail-now-row .stamp { color: var(--accent); font-weight: 600; }
+.rail-now-row .label { color: var(--accent); font-weight: 600; font-size: 12px; }
+
+@media (max-width: 1100px) {
+  .with-rail { grid-template-columns: 1fr; }
+  .rail { position: static; max-height: none; }
+}
+
+/* ---------- Step rail (TODO sequence sidebar) ---------- */
+.app.with-step-rail {
+  grid-template-columns: 240px 232px 1fr;
+}
+.step-rail {
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+  padding: 14px 12px 18px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.step-rail .sr-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 2px 6px 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+.step-rail .sr-head h2 {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.step-rail .sr-head .sr-count {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+.step-rail .sr-switch {
+  display: flex;
+  gap: 4px;
+  padding: 0 4px 8px;
+}
+.step-rail .sr-switch button {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.step-rail .sr-switch button.active {
+  background: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px 9px 12px;
+  position: relative;
+  border-left: 3px solid var(--border-strong);
+  cursor: pointer;
+}
+.step-card:hover { border-color: var(--border-strong); }
+.step-card .step-no {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.step-card .step-title {
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.35;
+}
+.step-card .step-stamp {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+.step-card.active {
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+.step-card.active .step-no { color: var(--accent); }
+.step-card.done { border-left-color: var(--success); opacity: 0.7; }
+.step-card.done .step-title { text-decoration: line-through; color: var(--text-faint); }
+.step-card.overdue { border-left-color: var(--danger); }
+.step-card.overdue .step-no { color: var(--danger); }
+.step-card.warn { border-left-color: var(--warning); }
+.step-card .step-tags {
+  margin-top: 5px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.step-card .step-tags .tag {
+  font-size: 10px;
+  padding: 1px 6px;
+}
+
+@media (max-width: 1100px) {
+  .app.with-step-rail { grid-template-columns: 240px 1fr; }
+  .step-rail { display: none; }
+}
+
 /* ---------- Misc ---------- */
 .mono { font-family: var(--mono); }
 .muted { color: var(--text-muted); }
