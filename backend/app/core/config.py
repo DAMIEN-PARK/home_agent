@@ -24,6 +24,11 @@ class Settings(BaseSettings):
 
     anthropic_api_key: str | None = None
 
+    google_oauth_client_id: str | None = None
+    google_oauth_client_secret: str | None = None
+    google_oauth_redirect_uri: str = "http://localhost:8000/oauth/google/callback"
+    google_calendar_id: str = "primary"
+
 
 @lru_cache
 def get_settings() -> Settings:
