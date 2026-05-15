@@ -122,6 +122,43 @@
       <p style="margin:0 0 6px"><strong>의료 카테고리 예산 초과</strong> — 5월 예산 ₩80,000 대비 ₩112,400 사용(140%). 검진비 일회성 지출이 원인. 다음달 예산 ₩100k로 상향 권장.</p>
       <p style="margin:0; color:var(--text-muted)">식비도 96%로 빠듯. 남은 16일을 ₩15,800/일 페이스로 유지 필요.</p>
     </div>
+
+    <div class="domain-chat" style="margin-top:18px">
+      <div class="dc-header">
+        <h2><span class="tag accent">ledger_agent</span> 도메인 챗</h2>
+        <span class="dc-scope">scope: ledger.* · ledger MCP only</span>
+      </div>
+      <div class="dc-thread">
+        <div class="msg user">
+          <div class="who">YOU · 12:38</div>
+          <div class="body">
+            <p>방금 점심 김밥 8500원, 카드.</p>
+            <div class="edit-row"><a href="#">✎ 수정</a> · <a href="#">↺ 재실행</a></div>
+          </div>
+        </div>
+        <div class="msg tool">
+          <div class="who">TOOL</div>
+          <div class="body">ledger_agent.category_inference("점심 김밥") → "식비" (conf 0.96) · add_transaction(2026-05-15, 8500, "식비", "체크카드") → ok</div>
+        </div>
+        <div class="msg">
+          <div class="who">AGENT · 12:38</div>
+          <div class="body">
+            <p>식비로 기록했어요. 5월 식비 누적 <strong>₩384,200 / ₩400k</strong> (96%).</p>
+          </div>
+        </div>
+      </div>
+      <div class="dc-input">
+        <textarea placeholder="이 도메인에만 묻기 — 가계부 (예: '이번 달 교통비 얼마 썼지?')"></textarea>
+        <button class="btn">+ 영수증</button>
+        <button class="btn primary">전송</button>
+      </div>
+      <div class="dc-suggests">
+        <span class="label">추천:</span>
+        <span class="dc-suggest">5월 식비 추이</span>
+        <span class="dc-suggest">예산 초과 항목</span>
+        <span class="dc-suggest">지난주 외식비</span>
+      </div>
+    </div>
   </main>
 </div>
 </body>

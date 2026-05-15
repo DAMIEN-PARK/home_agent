@@ -99,6 +99,43 @@
         </div>
       </div>
     </div>
+
+    <div class="domain-chat" style="margin-top:18px">
+      <div class="dc-header">
+        <h2><span class="tag accent">files_agent</span> 도메인 챗</h2>
+        <span class="dc-scope">scope: files.* · files MCP only · 기본 dry-run</span>
+      </div>
+      <div class="dc-thread">
+        <div class="msg user">
+          <div class="who">YOU · 14:20</div>
+          <div class="body">
+            <p>작년 가을 부모님이랑 찍은 사진 모아줘.</p>
+            <div class="edit-row"><a href="#">✎ 수정</a> · <a href="#">↺ 재실행</a></div>
+          </div>
+        </div>
+        <div class="msg tool">
+          <div class="who">TOOL</div>
+          <div class="body">files_agent.search_files(query="부모님 가을 2025", type="photo") → 38건 · top tags: #가족, #여행, #단풍</div>
+        </div>
+        <div class="msg">
+          <div class="who">AGENT · 14:20</div>
+          <div class="body">
+            <p>38장 찾았어요. 2025-10-12~10-15 단양 여행이 27장으로 가장 많네요. <strong>앨범 "부모님 단풍 2025"</strong>로 묶을까요? (dry-run)</p>
+          </div>
+        </div>
+      </div>
+      <div class="dc-input">
+        <textarea placeholder="이 도메인에만 묻기 — 파일·사진 (예: '중복 사진 찾아줘', '이 폴더 날짜별로 정리')"></textarea>
+        <button class="btn">⤴ 업로드</button>
+        <button class="btn primary">전송</button>
+      </div>
+      <div class="dc-suggests">
+        <span class="label">추천:</span>
+        <span class="dc-suggest">중복 파일 찾기</span>
+        <span class="dc-suggest">영수증 자동 분류</span>
+        <span class="dc-suggest">PDF 요약</span>
+      </div>
+    </div>
   </main>
 </div>
 </body>

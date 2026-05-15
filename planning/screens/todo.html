@@ -132,6 +132,48 @@
       <h2>에이전트 제안</h2>
       <p style="margin:0">P0/P1 작업 4건이 모두 같은 사람(나)에게 몰려 있어요. <a href="#">스택 결정 리뷰(5/19)</a> 이후로 P2를 미루는 방안 추천.</p>
     </div>
+
+    <div class="domain-chat" style="margin-top:18px">
+      <div class="dc-header">
+        <h2><span class="tag accent">todo_agent</span> 도메인 챗</h2>
+        <span class="dc-scope">scope: todo.* · todo MCP only</span>
+      </div>
+      <div class="dc-thread">
+        <div class="msg user">
+          <div class="who">YOU · 07:55</div>
+          <div class="body">
+            <p>오늘 P0/P1만 보여줘. 컨텍스트 @work만.</p>
+            <div class="edit-row"><a href="#">✎ 수정</a> · <a href="#">↺ 재실행</a></div>
+          </div>
+        </div>
+        <div class="msg tool">
+          <div class="who">TOOL</div>
+          <div class="body">todo_agent.list_tasks(priority="P0,P1", context="@work", due="today") → 2건</div>
+        </div>
+        <div class="msg">
+          <div class="who">AGENT · 07:55</div>
+          <div class="body">
+            <p>오늘 마쳐야 할 2건:</p>
+            <ul>
+              <li><strong>MVP 범위 확정</strong> · P0 · today</li>
+              <li><strong>일정 에이전트 MCP 스켈레톤</strong> · P1 · D-1</li>
+            </ul>
+            <p>둘 다 home_agent 프로젝트, 선행 종속이라 MVP 범위부터 끝내는 게 좋아요.</p>
+          </div>
+        </div>
+      </div>
+      <div class="dc-input">
+        <textarea placeholder="이 도메인에만 묻기 — TODO (예: '내일 마감 작업 추가', '오늘 할 일 우선순위 재정렬')"></textarea>
+        <button class="btn">+ 작업</button>
+        <button class="btn primary">전송</button>
+      </div>
+      <div class="dc-suggests">
+        <span class="label">추천:</span>
+        <span class="dc-suggest">overdue 항목 정리</span>
+        <span class="dc-suggest">이번주 회고 준비</span>
+        <span class="dc-suggest">프로젝트별 진행률</span>
+      </div>
+    </div>
   </main>
 </div>
 </body>
