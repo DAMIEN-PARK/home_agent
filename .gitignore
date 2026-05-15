@@ -20,8 +20,8 @@ dist/
 # Node
 node_modules/
 .next/
-dist/
 .vite/
+*.tsbuildinfo
 
 # IDE / OS
 .idea/
