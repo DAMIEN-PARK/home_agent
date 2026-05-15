@@ -107,6 +107,48 @@
         </div>
       </div>
     </div>
+
+    <div class="domain-chat" style="margin-top:18px">
+      <div class="dc-header">
+        <h2><span class="tag accent">ideas_agent</span> 도메인 챗</h2>
+        <span class="dc-scope">scope: ideas.* · notes MCP only</span>
+      </div>
+      <div class="dc-thread">
+        <div class="msg user">
+          <div class="who">YOU · 09:14</div>
+          <div class="body">
+            <p>이 노트에서 액션 아이템만 뽑아줘. todo로 넘길 후보.</p>
+            <div class="edit-row"><a href="#">✎ 수정</a> · <a href="#">↺ 재실행</a></div>
+          </div>
+        </div>
+        <div class="msg tool">
+          <div class="who">TOOL</div>
+          <div class="body">ideas_agent.extract_action_items(note_id="orch-routing-v2") → 2개 후보</div>
+        </div>
+        <div class="msg">
+          <div class="who">AGENT · 09:14</div>
+          <div class="body">
+            <p>액션 후보 2개:</p>
+            <ul>
+              <li><strong>plan 단계 프로토타입</strong> — backend/app/agents/orchestrator.py</li>
+              <li><strong>병렬 호출 결합 패턴 비교</strong> — 직접 구현 vs SDK 래퍼</li>
+            </ul>
+            <p>todo로 넘길까요?</p>
+          </div>
+        </div>
+      </div>
+      <div class="dc-input">
+        <textarea placeholder="이 도메인에만 묻기 — 아이디어·노트 (예: '오케스트레이터 관련 노트 다 모아줘')"></textarea>
+        <button class="btn">+ 노트</button>
+        <button class="btn primary">전송</button>
+      </div>
+      <div class="dc-suggests">
+        <span class="label">추천:</span>
+        <span class="dc-suggest">관련 노트 의미검색</span>
+        <span class="dc-suggest">이 노트 요약</span>
+        <span class="dc-suggest">스레드로 묶기</span>
+      </div>
+    </div>
   </main>
 </div>
 </body>
