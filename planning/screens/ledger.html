@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>home·agent — 가계부</title>
+<link rel="stylesheet" href="_shared/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">home<span class="dot">·</span>agent</div>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
+      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
+      <div class="group-label">도메인</div>
+      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
+      <a href="todo.html"><span class="ic">☑</span> TODO</a>
+      <a href="ledger.html" class="active"><span class="ic">₩</span> 가계부</a>
+      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
+      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
+      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
+      <div class="group-label">시스템</div>
+      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
+      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+    </nav>
+    <div class="footer">v0.0.1 · planning mockup</div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>가계부 · 2026년 5월</h1>
+        <div class="sub">수기 입력 우선 · 영수증 OCR은 v0.2</div>
+      </div>
+      <div class="actions">
+        <button class="btn ghost">월 ▾</button>
+        <button class="btn">CSV 내보내기</button>
+        <button class="btn primary">+ 거래</button>
+      </div>
+    </div>
+
+    <div class="grid cols-4">
+      <div class="card stat">
+        <h2>5월 지출</h2>
+        <div class="num">₩1,284,300</div>
+        <div class="delta">예산 ₩1,500,000 · 86%</div>
+      </div>
+      <div class="card stat">
+        <h2>5월 수입</h2>
+        <div class="num">₩4,200,000</div>
+        <div class="delta">월급 + 부수입</div>
+      </div>
+      <div class="card stat">
+        <h2>저축률</h2>
+        <div class="num">69.4%</div>
+        <div class="delta up">+2.1%p vs 4월</div>
+      </div>
+      <div class="card stat">
+        <h2>일평균</h2>
+        <div class="num">₩85,620</div>
+        <div class="delta">15일 기준</div>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card">
+        <h2>카테고리별 (5월)</h2>
+        <table class="tbl">
+          <thead><tr><th>카테고리</th><th class="num">예산</th><th class="num">사용</th><th class="num">%</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag">식비</span></td><td class="num">400,000</td><td class="num">384,200</td><td class="num">96</td></tr>
+            <tr><td><span class="tag">교통</span></td><td class="num">120,000</td><td class="num">68,400</td><td class="num">57</td></tr>
+            <tr><td><span class="tag">생활</span></td><td class="num">200,000</td><td class="num">131,800</td><td class="num">66</td></tr>
+            <tr><td><span class="tag">문화/여가</span></td><td class="num">150,000</td><td class="num">42,000</td><td class="num">28</td></tr>
+            <tr><td><span class="tag">의료</span></td><td class="num">80,000</td><td class="num">112,400</td><td class="num">140 ⚠</td></tr>
+            <tr><td><span class="tag">고정비</span></td><td class="num">450,000</td><td class="num">442,000</td><td class="num">98</td></tr>
+            <tr><td><span class="tag">기타</span></td><td class="num">100,000</td><td class="num">103,500</td><td class="num">104</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>월별 추이</h2>
+        <div style="display:flex; align-items:flex-end; gap:10px; height:200px; padding:10px 4px; border-bottom:1px solid var(--border)">
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px">
+            <div style="width:100%; height:60%; background:var(--surface-2); border-top:3px solid var(--accent)"></div>
+            <span class="faint mono" style="font-size:11px">2월</span>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px">
+            <div style="width:100%; height:80%; background:var(--surface-2); border-top:3px solid var(--accent)"></div>
+            <span class="faint mono" style="font-size:11px">3월</span>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px">
+            <div style="width:100%; height:70%; background:var(--surface-2); border-top:3px solid var(--accent)"></div>
+            <span class="faint mono" style="font-size:11px">4월</span>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px">
+            <div style="width:100%; height:50%; background:var(--accent-soft); border-top:3px solid var(--accent)"></div>
+            <span class="mono" style="font-size:11px; color:var(--accent)">5월 (진행중)</span>
+          </div>
+        </div>
+        <p class="muted" style="font-size:12px; margin:10px 0 0">5월은 15일 기준이라 추세선보다 낮게 표시됨.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>최근 거래</h2>
+      <table class="tbl">
+        <thead><tr><th>일자</th><th>설명</th><th>카테고리</th><th>결제수단</th><th class="num">금액</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">5/15</td><td>점심 — 김밥</td><td><span class="tag">식비</span></td><td>체크카드</td><td class="num">8,500</td></tr>
+          <tr><td class="mono">5/14</td><td>지하철</td><td><span class="tag">교통</span></td><td>교통카드</td><td class="num">2,800</td></tr>
+          <tr><td class="mono">5/14</td><td>저녁 배달 — 치킨</td><td><span class="tag">식비</span></td><td>신용카드</td><td class="num">23,000</td></tr>
+          <tr><td class="mono">5/14</td><td>편의점</td><td><span class="tag">생활</span></td><td>체크카드</td><td class="num">8,000</td></tr>
+          <tr><td class="mono">5/13</td><td>월세</td><td><span class="tag">고정비</span></td><td>자동이체</td><td class="num">450,000</td></tr>
+          <tr><td class="mono">5/13</td><td>병원 진료비</td><td><span class="tag danger">의료</span></td><td>신용카드</td><td class="num">38,000</td></tr>
+          <tr><td class="mono">5/12</td><td>장보기 — 마트</td><td><span class="tag">식비</span></td><td>체크카드</td><td class="num">62,400</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>에이전트 알림</h2>
+      <p style="margin:0 0 6px"><strong>의료 카테고리 예산 초과</strong> — 5월 예산 ₩80,000 대비 ₩112,400 사용(140%). 검진비 일회성 지출이 원인. 다음달 예산 ₩100k로 상향 권장.</p>
+      <p style="margin:0; color:var(--text-muted)">식비도 96%로 빠듯. 남은 16일을 ₩15,800/일 페이스로 유지 필요.</p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

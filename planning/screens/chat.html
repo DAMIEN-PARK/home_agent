@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>home·agent — 챗</title>
+<link rel="stylesheet" href="_shared/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">home<span class="dot">·</span>agent</div>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
+      <a href="chat.html" class="active"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
+      <div class="group-label">도메인</div>
+      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
+      <a href="todo.html"><span class="ic">☑</span> TODO</a>
+      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
+      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
+      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
+      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
+      <div class="group-label">시스템</div>
+      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
+      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+    </nav>
+    <div class="footer">v0.0.1 · planning mockup</div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>오케스트레이터 챗</h1>
+        <div class="sub">자연어로 묻고, 적절한 서브에이전트가 호출되는 메인 인터페이스</div>
+      </div>
+      <div class="actions">
+        <button class="btn ghost">↻ 새 대화</button>
+        <button class="btn">⌥ 도구 보기</button>
+      </div>
+    </div>
+
+    <div class="chat-wrap">
+      <div class="chat-main">
+        <div class="chat-thread">
+
+          <div class="msg user">
+            <div class="who">YOU · 09:14</div>
+            <div class="body">
+              <p>다음주 화요일 오후에 미팅 2시간 잡을 수 있는 시간 찾아주고, 동시에 5월 식비 얼마 썼는지도 알려줘.</p>
+            </div>
+          </div>
+
+          <div class="msg tool">
+            <div class="who">PLAN</div>
+            <div class="body">orchestrator → split into 2 subtasks: [schedule_agent.find_slot, ledger_agent.sum_by_category]</div>
+          </div>
+
+          <div class="msg tool">
+            <div class="who">TOOL</div>
+            <div class="body">schedule_agent.find_slot(date="2026-05-19", duration=120, prefer="afternoon") → 14:00-16:00, 16:30-18:30</div>
+          </div>
+
+          <div class="msg tool">
+            <div class="who">TOOL</div>
+            <div class="body">ledger_agent.sum_by_category(month="2026-05", category="식비") → ₩384,200 (목표 ₩400k의 96%)</div>
+          </div>
+
+          <div class="msg">
+            <div class="who">AGENT · 09:14</div>
+            <div class="body">
+              <p>화요일(5/19) 오후엔 두 슬롯이 비어 있어요.</p>
+              <ul>
+                <li><strong>14:00 – 16:00</strong> ← 추천 (점심 이후 충분한 회복 시간)</li>
+                <li>16:30 – 18:30</li>
+              </ul>
+              <p>그리고 5월 식비는 <strong>₩384,200</strong>. 월 예산(₩400k)의 96%로, 이대로면 이번 달 안에 살짝 초과할 가능성 있어요.</p>
+              <div style="display:flex; gap:6px; margin-top:8px">
+                <button class="btn">14:00 슬롯으로 일정 잡기</button>
+                <button class="btn ghost">식비 예산 조정</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg user">
+            <div class="who">YOU · 09:15</div>
+            <div class="body">
+              <p>14시 슬롯으로 잡고, 제목은 "스택 결정 리뷰", 참석자에 정민 추가해줘.</p>
+            </div>
+          </div>
+
+          <div class="msg tool">
+            <div class="who">TOOL</div>
+            <div class="body">schedule_agent.create_event(title="스택 결정 리뷰", start="2026-05-19T14:00", duration=120, attendees=["정민"]) → ok (id=ev_8a2c)</div>
+          </div>
+
+          <div class="msg">
+            <div class="who">AGENT · 09:15</div>
+            <div class="body">
+              <p>잡았어요. <span class="tag accent">5/19 화 14:00–16:00</span> 스택 결정 리뷰 · 정민 초대.</p>
+            </div>
+          </div>
+
+        </div>
+        <div class="chat-input">
+          <textarea placeholder="무엇이든 물어보세요 — 일정, TODO, 가계부, 자산, 아이디어, 파일…"></textarea>
+          <button class="btn">+ 첨부</button>
+          <button class="btn primary">전송</button>
+        </div>
+      </div>
+
+      <div class="chat-side">
+        <div class="card">
+          <h2>활성 컨텍스트</h2>
+          <ul class="list">
+            <li><span class="tag accent">schedule</span> calendar:default <span class="meta">읽기/쓰기</span></li>
+            <li><span class="tag accent">ledger</span> 5월 거래 <span class="meta">읽기</span></li>
+            <li><span class="tag">memory</span> 최근 7일 <span class="meta">RAG</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>이번 턴 호출 트레이스</h2>
+          <ul class="list">
+            <li><span class="mono faint">→</span> schedule.find_slot <span class="meta">128ms</span></li>
+            <li><span class="mono faint">→</span> ledger.sum_by_category <span class="meta">61ms</span></li>
+            <li><span class="mono faint">→</span> schedule.create_event <span class="meta">204ms</span></li>
+          </ul>
+          <p class="muted" style="margin:8px 0 0; font-size:12px">총 393ms · 토큰 1,284 · Sonnet 4.6</p>
+        </div>
+        <div class="card">
+          <h2>추천 질문</h2>
+          <ul class="list">
+            <li>이번 주 회의를 한 화면에</li>
+            <li>"카페" 카테고리 지난달 대비</li>
+            <li>예산 초과 가능 항목 알려줘</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

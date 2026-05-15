@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>home·agent — 파일 · 사진</title>
+<link rel="stylesheet" href="_shared/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">home<span class="dot">·</span>agent</div>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
+      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
+      <div class="group-label">도메인</div>
+      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
+      <a href="todo.html"><span class="ic">☑</span> TODO</a>
+      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
+      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
+      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
+      <a href="files.html" class="active"><span class="ic">▤</span> 파일 · 사진</a>
+      <div class="group-label">시스템</div>
+      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
+      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+    </nav>
+    <div class="footer">v0.0.1 · planning mockup</div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>파일 · 사진 정리</h1>
+        <div class="sub">로컬 저장 · 메타데이터/임베딩만 Postgres · 자연어 검색</div>
+      </div>
+      <div class="actions">
+        <input class="btn" placeholder="🔍 자연어로 검색 — 예: '작년 가을 부모님과 찍은 사진'" style="width:380px; cursor:text">
+        <button class="btn primary">⤴ 업로드</button>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 200px 1fr; gap:18px">
+      <aside>
+        <div class="card" style="padding:14px">
+          <h2>유형</h2>
+          <ul class="list">
+            <li>📷 사진 <span class="meta">3,428</span></li>
+            <li>📄 문서 <span class="meta">412</span></li>
+            <li>📑 PDF <span class="meta">189</span></li>
+            <li>🎬 영상 <span class="meta">37</span></li>
+            <li>🎵 음성 <span class="meta">24</span></li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px; margin-top:12px">
+          <h2>자동 태그</h2>
+          <ul class="list">
+            <li># 가족 <span class="meta">412</span></li>
+            <li># 여행 <span class="meta">238</span></li>
+            <li># 영수증 <span class="meta">156</span></li>
+            <li># 음식 <span class="meta">189</span></li>
+            <li># 풍경 <span class="meta">301</span></li>
+            <li># 계약서 <span class="meta">22</span></li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px; margin-top:12px">
+          <h2>처리 대기</h2>
+          <p class="muted" style="margin:0; font-size:12px">자동 태깅: 8개 큐<br>임베딩 생성: 2개 큐</p>
+        </div>
+      </aside>
+
+      <div>
+        <div style="display:flex; gap:6px; margin-bottom:12px">
+          <span class="tag accent">최근 업로드</span>
+          <span class="tag"># 가족</span>
+          <span class="tag"># 5월</span>
+          <button class="btn ghost" style="margin-left:auto">정렬: 최신순 ▾</button>
+        </div>
+
+        <div class="file-grid">
+          <div class="file-tile"><div class="thumb">🌅</div><div class="name">한강_석양_001.jpg</div><div class="meta">5/14 · 4.2 MB</div></div>
+          <div class="file-tile"><div class="thumb">📷</div><div class="name">생일파티_002.jpg</div><div class="meta">5/12 · 3.8 MB</div></div>
+          <div class="file-tile"><div class="thumb">📷</div><div class="name">생일파티_003.jpg</div><div class="meta">5/12 · 3.7 MB</div></div>
+          <div class="file-tile"><div class="thumb">📷</div><div class="name">생일파티_004.jpg</div><div class="meta">5/12 · 3.9 MB</div></div>
+          <div class="file-tile"><div class="thumb">📄</div><div class="name">월세계약서_2026.pdf</div><div class="meta">5/10 · 281 KB</div></div>
+          <div class="file-tile"><div class="thumb">🍱</div><div class="name">점심_김밥.jpg</div><div class="meta">5/15 · 1.2 MB</div></div>
+          <div class="file-tile"><div class="thumb">🧾</div><div class="name">영수증_마트.jpg</div><div class="meta">5/12 · 800 KB</div></div>
+          <div class="file-tile"><div class="thumb">📑</div><div class="name">건강검진결과.pdf</div><div class="meta">5/9 · 1.4 MB</div></div>
+          <div class="file-tile"><div class="thumb">🌳</div><div class="name">공원산책_001.jpg</div><div class="meta">5/4 · 4.1 MB</div></div>
+          <div class="file-tile"><div class="thumb">🌳</div><div class="name">공원산책_002.jpg</div><div class="meta">5/4 · 4.0 MB</div></div>
+          <div class="file-tile"><div class="thumb">🎬</div><div class="name">조카_생일_clip.mp4</div><div class="meta">5/12 · 28 MB</div></div>
+          <div class="file-tile"><div class="thumb">🎵</div><div class="name">아이디어_메모.m4a</div><div class="meta">5/13 · 1.8 MB</div></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2>에이전트 제안</h2>
+          <ul class="list">
+            <li>"생일파티" 사진 4장이 같은 이벤트로 보임 — 앨범 생성?</li>
+            <li>영수증_마트.jpg에서 ₩62,400 인식됨 — 가계부에 자동 등록?</li>
+            <li>건강검진결과.pdf 요약 생성 후 # 건강 노트로 저장?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

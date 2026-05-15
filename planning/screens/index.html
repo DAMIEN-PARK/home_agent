@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>home·agent — 기획 화면 인덱스</title>
+<link rel="stylesheet" href="_shared/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">home<span class="dot">·</span>agent</div>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
+      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
+      <div class="group-label">도메인</div>
+      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
+      <a href="todo.html"><span class="ic">☑</span> TODO</a>
+      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
+      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
+      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
+      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
+      <div class="group-label">시스템</div>
+      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
+      <a href="index.html" class="active"><span class="ic">↩</span> 화면 인덱스</a>
+    </nav>
+    <div class="footer">v0.0.1 · planning mockup</div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>기획 화면 인덱스</h1>
+        <div class="sub">React 구현 전 정보 구조·디자인 검증용 정적 HTML 목업</div>
+      </div>
+      <div class="actions">
+        <span class="tag accent">draft</span>
+        <span class="tag">2026-05-15</span>
+      </div>
+    </div>
+
+    <div class="grid cols-3">
+      <a class="card" href="dashboard.html">
+        <h3>▦ 대시보드</h3>
+        <p class="muted">오늘의 요약: 일정·TODO·가계부·알림. 오케스트레이터가 집계.</p>
+        <span class="tag accent">orchestrator</span>
+      </a>
+      <a class="card" href="chat.html">
+        <h3>◐ 챗 UI</h3>
+        <p class="muted">메인 진입점. 스트리밍 응답 + 어느 서브에이전트/툴이 호출됐는지 트레이스 사이드패널.</p>
+        <span class="tag accent">orchestrator</span>
+      </a>
+      <a class="card" href="schedule.html">
+        <h3>▣ 일정 · 비전</h3>
+        <p class="muted">월간 캘린더 + 비전/장기 목표 트리. 일정 에이전트.</p>
+        <span class="tag">schedule</span>
+      </a>
+      <a class="card" href="todo.html">
+        <h3>☑ TODO</h3>
+        <p class="muted">칸반 보드 · 프로젝트/컨텍스트 필터 · 우선순위. TODO 에이전트.</p>
+        <span class="tag">todo</span>
+      </a>
+      <a class="card" href="ledger.html">
+        <h3>₩ 가계부</h3>
+        <p class="muted">거래 입력, 카테고리·예산 · 월별 차트. 가계부 에이전트.</p>
+        <span class="tag">ledger</span>
+      </a>
+      <a class="card" href="finance.html">
+        <h3>↗ 재무 · 자산</h3>
+        <p class="muted">계좌·보유종목·평가액 트래킹. 재무 에이전트.</p>
+        <span class="tag">finance</span>
+      </a>
+      <a class="card" href="ideas.html">
+        <h3>✦ 아이디어</h3>
+        <p class="muted">노트·태그·의미검색·관련 노트. 아이디어 에이전트.</p>
+        <span class="tag">ideas</span>
+      </a>
+      <a class="card" href="files.html">
+        <h3>▤ 파일 · 사진</h3>
+        <p class="muted">그리드, 메타데이터, 자연어 검색. 파일 에이전트.</p>
+        <span class="tag">files</span>
+      </a>
+      <a class="card" href="settings.html">
+        <h3>⚙ 설정</h3>
+        <p class="muted">에이전트/모델 라우팅, MCP 서버, 인증, 백업.</p>
+        <span class="tag">system</span>
+      </a>
+    </div>
+
+    <hr>
+
+    <div class="card">
+      <h2>참고</h2>
+      <p class="muted">상세 디자인 원칙과 화면 매핑은 <a href="README.md">README.md</a> 참조. 기술 스택은 <a href="../STACK.md">STACK.md</a>.</p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

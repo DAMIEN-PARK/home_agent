@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>home·agent — TODO</title>
+<link rel="stylesheet" href="_shared/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">home<span class="dot">·</span>agent</div>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
+      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
+      <div class="group-label">도메인</div>
+      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
+      <a href="todo.html" class="active"><span class="ic">☑</span> TODO</a>
+      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
+      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
+      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
+      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
+      <div class="group-label">시스템</div>
+      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
+      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+    </nav>
+    <div class="footer">v0.0.1 · planning mockup</div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>업무 TODO</h1>
+        <div class="sub">프로젝트 · 컨텍스트(@home, @work, @errands) · 우선순위로 필터링</div>
+      </div>
+      <div class="actions">
+        <button class="btn ghost">필터</button>
+        <button class="btn">프로젝트 ▾</button>
+        <button class="btn primary">+ 작업</button>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap">
+      <span class="tag accent">all 23</span>
+      <span class="tag">home_agent 11</span>
+      <span class="tag">개인 6</span>
+      <span class="tag">집안일 3</span>
+      <span class="tag danger">overdue 3</span>
+    </div>
+
+    <div class="kanban">
+      <div class="kcol">
+        <h3>Backlog <span class="faint">9</span></h3>
+        <div class="kcard">
+          <div>모바일 PWA 검토</div>
+          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
+        </div>
+        <div class="kcard">
+          <div>가계부 OCR 영수증 파싱</div>
+          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
+        </div>
+        <div class="kcard">
+          <div>거실 책장 정리</div>
+          <div class="row"><span class="tag">집안일</span><span class="faint mono">P4</span></div>
+        </div>
+        <div class="kcard">
+          <div>Tauri 데스크톱 래핑 PoC</div>
+          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
+        </div>
+      </div>
+
+      <div class="kcol">
+        <h3>This Week <span class="faint">7</span></h3>
+        <div class="kcard">
+          <div><strong>일정 에이전트 — MCP 서버 스켈레톤</strong></div>
+          <div class="row"><span class="tag accent">home_agent</span><span class="tag warn">D-1</span><span class="faint mono">P1</span></div>
+        </div>
+        <div class="kcard">
+          <div>STACK.md 결정 항목 클로즈</div>
+          <div class="row"><span class="tag accent">home_agent</span><span class="tag warn">D-2</span><span class="faint mono">P1</span></div>
+        </div>
+        <div class="kcard">
+          <div>pgvector 인덱스 벤치</div>
+          <div class="row"><span class="tag">home_agent</span><span class="tag">D-4</span><span class="faint mono">P2</span></div>
+        </div>
+        <div class="kcard">
+          <div>가계부 카테고리 트리 정리</div>
+          <div class="row"><span class="tag">home_agent</span><span class="tag">D-7</span><span class="faint mono">P2</span></div>
+        </div>
+        <div class="kcard">
+          <div>병원 검진 결과 정리</div>
+          <div class="row"><span class="tag">개인</span><span class="faint mono">P2</span></div>
+        </div>
+      </div>
+
+      <div class="kcol">
+        <h3>In Progress <span class="faint">4</span></h3>
+        <div class="kcard">
+          <div><strong>MVP 범위 확정</strong></div>
+          <div class="row"><span class="tag accent">home_agent</span><span class="tag danger">today</span><span class="faint mono">P0</span></div>
+        </div>
+        <div class="kcard">
+          <div>오케스트레이터 라우팅 규칙 작성</div>
+          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P1</span></div>
+        </div>
+        <div class="kcard">
+          <div>가족 일정 동기화 정책</div>
+          <div class="row"><span class="tag">개인</span><span class="faint mono">P2</span></div>
+        </div>
+      </div>
+
+      <div class="kcol">
+        <h3>Done · 7일 <span class="faint">12</span></h3>
+        <div class="kcard">
+          <div><s>레포 스캐폴딩 (planning/frontend/backend)</s></div>
+          <div class="row"><span class="tag success">완료</span><span class="faint mono">5/14</span></div>
+        </div>
+        <div class="kcard">
+          <div><s>Postgres + pgvector 확장 활성화</s></div>
+          <div class="row"><span class="tag success">완료</span><span class="faint mono">5/13</span></div>
+        </div>
+        <div class="kcard">
+          <div><s>도메인별 스키마 분리 결정</s></div>
+          <div class="row"><span class="tag success">완료</span><span class="faint mono">5/12</span></div>
+        </div>
+        <div class="kcard">
+          <div><s>Claude Agent SDK 도입 결정</s></div>
+          <div class="row"><span class="tag success">완료</span><span class="faint mono">5/10</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h2>에이전트 제안</h2>
+      <p style="margin:0">P0/P1 작업 4건이 모두 같은 사람(나)에게 몰려 있어요. <a href="#">스택 결정 리뷰(5/19)</a> 이후로 P2를 미루는 방안 추천.</p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

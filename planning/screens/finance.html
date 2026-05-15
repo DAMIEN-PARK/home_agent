@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>home·agent — 재무</title>
+<link rel="stylesheet" href="_shared/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">home<span class="dot">·</span>agent</div>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
+      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
+      <div class="group-label">도메인</div>
+      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
+      <a href="todo.html"><span class="ic">☑</span> TODO</a>
+      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
+      <a href="finance.html" class="active"><span class="ic">↗</span> 재무 · 자산</a>
+      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
+      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
+      <div class="group-label">시스템</div>
+      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
+      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+    </nav>
+    <div class="footer">v0.0.1 · planning mockup</div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>재무 · 자산</h1>
+        <div class="sub">계좌 · 보유 종목 · 평가액. 시세 갱신은 일 1회 (장 마감 후)</div>
+      </div>
+      <div class="actions">
+        <button class="btn ghost">기간 ▾</button>
+        <button class="btn">+ 계좌</button>
+        <button class="btn primary">+ 거래</button>
+      </div>
+    </div>
+
+    <div class="grid cols-4">
+      <div class="card stat">
+        <h2>순자산</h2>
+        <div class="num">₩52,420,000</div>
+        <div class="delta up">+₩418k (월)</div>
+      </div>
+      <div class="card stat">
+        <h2>현금 · 예금</h2>
+        <div class="num">₩28,100,000</div>
+        <div class="delta">53.6%</div>
+      </div>
+      <div class="card stat">
+        <h2>투자</h2>
+        <div class="num">₩22,320,000</div>
+        <div class="delta up">+1.8% MTD</div>
+      </div>
+      <div class="card stat">
+        <h2>부채</h2>
+        <div class="num">₩2,000,000</div>
+        <div class="delta down">-₩100k</div>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card">
+        <h2>계좌</h2>
+        <table class="tbl">
+          <thead><tr><th>계좌</th><th>유형</th><th>통화</th><th class="num">잔액</th></tr></thead>
+          <tbody>
+            <tr><td>토스 입출금</td><td>입출금</td><td>KRW</td><td class="num">3,840,000</td></tr>
+            <tr><td>KB 주거래</td><td>입출금</td><td>KRW</td><td class="num">2,260,000</td></tr>
+            <tr><td>카카오뱅크 세이프박스</td><td>비상금</td><td>KRW</td><td class="num">5,000,000</td></tr>
+            <tr><td>적금 (3년)</td><td>적금</td><td>KRW</td><td class="num">17,000,000</td></tr>
+            <tr><td>증권사 CMA</td><td>투자대기</td><td>KRW</td><td class="num">1,200,000</td></tr>
+            <tr><td>해외주식 (USD)</td><td>증권</td><td>USD</td><td class="num">$12,400 ≈ 16,920k</td></tr>
+            <tr><td>국내주식</td><td>증권</td><td>KRW</td><td class="num">4,200,000</td></tr>
+            <tr><td>마이너스통장</td><td>대출</td><td>KRW</td><td class="num">-2,000,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>자산 배분</h2>
+        <div style="display:flex; height:18px; border-radius:6px; overflow:hidden; margin:10px 0 16px">
+          <div style="flex:53.6; background:#4f46e5"></div>
+          <div style="flex:32.3; background:#7c3aed"></div>
+          <div style="flex:8.0; background:#a855f7"></div>
+          <div style="flex:2.3; background:#c084fc"></div>
+          <div style="flex:3.8; background:#e9d5ff"></div>
+        </div>
+        <ul class="list">
+          <li><span class="tag" style="background:#eef2ff; color:#4f46e5">현금/예금 53.6%</span> <span class="meta">₩28,100k</span></li>
+          <li><span class="tag" style="background:#f3e8ff; color:#7c3aed">해외주식 32.3%</span> <span class="meta">₩16,920k</span></li>
+          <li><span class="tag" style="background:#faf5ff; color:#a855f7">국내주식 8.0%</span> <span class="meta">₩4,200k</span></li>
+          <li><span class="tag">CMA 2.3%</span> <span class="meta">₩1,200k</span></li>
+          <li><span class="tag">기타 3.8%</span> <span class="meta">₩2,000k</span></li>
+        </ul>
+        <p class="muted" style="font-size:12px; margin-top:10px">목표 배분: 현금 30% / 주식 60% / 기타 10%. 현재 현금 비중이 23%p 높음.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>주요 보유 종목</h2>
+      <table class="tbl">
+        <thead><tr><th>종목</th><th>수량</th><th class="num">평단</th><th class="num">현재가</th><th class="num">평가액</th><th class="num">손익</th></tr></thead>
+        <tbody>
+          <tr><td>VOO (S&P 500)</td><td>22</td><td class="num">$432.10</td><td class="num">$498.20</td><td class="num">$10,960</td><td class="num" style="color:var(--success)">+15.3%</td></tr>
+          <tr><td>QQQ</td><td>3</td><td class="num">$398.40</td><td class="num">$480.10</td><td class="num">$1,440</td><td class="num" style="color:var(--success)">+20.5%</td></tr>
+          <tr><td>삼성전자</td><td>40</td><td class="num">68,200</td><td class="num">72,800</td><td class="num">2,912,000</td><td class="num" style="color:var(--success)">+6.7%</td></tr>
+          <tr><td>KODEX 200</td><td>30</td><td class="num">42,100</td><td class="num">42,900</td><td class="num">1,287,000</td><td class="num" style="color:var(--success)">+1.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>에이전트 인사이트</h2>
+      <ul class="list">
+        <li>현금 비중 53.6%로 목표(30%)보다 +23.6%p 높음. 점진적 분할매수 시뮬레이션 보기 →</li>
+        <li>VOO 평단 기준 +15% 평가익. 분기 리밸런싱 시기 도래.</li>
+        <li>마이너스통장 잔액 ₩2M 유지 중 — 이자 5.4%. 비상금 ₩5M로 상환 가능.</li>
+      </ul>
+    </div>
+  </main>
+</div>
+</body>
+</html>

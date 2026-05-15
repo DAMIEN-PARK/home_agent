@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>home·agent — 아이디어</title>
+<link rel="stylesheet" href="_shared/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">home<span class="dot">·</span>agent</div>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
+      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
+      <div class="group-label">도메인</div>
+      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
+      <a href="todo.html"><span class="ic">☑</span> TODO</a>
+      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
+      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
+      <a href="ideas.html" class="active"><span class="ic">✦</span> 아이디어</a>
+      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
+      <div class="group-label">시스템</div>
+      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
+      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+    </nav>
+    <div class="footer">v0.0.1 · planning mockup</div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>아이디어 · 전략 정리</h1>
+        <div class="sub">노트 작성 · 의미 검색 · 관련 노트 자동 연결</div>
+      </div>
+      <div class="actions">
+        <input class="btn" placeholder="🔍 의미로 검색 — 예: '오케스트레이터 라우팅 정책'" style="width:340px; cursor:text">
+        <button class="btn primary">+ 노트</button>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns: 220px 1fr 280px;">
+      <div class="card" style="padding:14px">
+        <h2>태그</h2>
+        <ul class="list">
+          <li># architecture <span class="meta">14</span></li>
+          <li># mvp <span class="meta">9</span></li>
+          <li># orchestrator <span class="meta">7</span></li>
+          <li># mcp <span class="meta">6</span></li>
+          <li># ux <span class="meta">5</span></li>
+          <li># 회고 <span class="meta">12</span></li>
+          <li># 책 <span class="meta">22</span></li>
+          <li># 라이프 <span class="meta">18</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px">
+          <h3 style="margin:0">오케스트레이터 라우팅 정책 v2</h3>
+          <div style="display:flex; gap:4px">
+            <span class="tag accent"># orchestrator</span>
+            <span class="tag"># architecture</span>
+            <span class="tag"># mvp</span>
+          </div>
+        </div>
+        <p class="muted" style="font-size:12px; margin:0 0 14px">2026-05-15 09:02 · 최근 편집 12분 전</p>
+
+        <p>현재 오케스트레이터는 의도 분류 → 단일 서브에이전트 호출 구조. <strong>문제</strong>: "다음주에 미팅 잡고 식비도 알려줘"처럼 2개 도메인이 섞인 요청을 한 번에 못 풂.</p>
+
+        <p>v2 제안:</p>
+        <ol>
+          <li>의도를 <em>여러 개</em>로 쪼개는 plan 단계 도입 (LLM 한 번 더 호출).</li>
+          <li>각 서브태스크는 병렬 실행, 결과를 오케스트레이터가 다시 합쳐 응답.</li>
+          <li>의존성 있는 호출(예: "그 일정의 참석자에게 메모 전송")은 순차.</li>
+        </ol>
+
+        <blockquote style="border-left:3px solid var(--accent); padding:8px 12px; background:var(--surface-2); margin:10px 0; border-radius:4px">
+          참고 — Claude Agent SDK의 sub-agent 패턴이 이미 비슷. 직접 구현보다 SDK 위에 thin layer만 얹는 게 낫겠음.
+        </blockquote>
+
+        <p><strong>다음 액션</strong> — `backend/app/agents/orchestrator.py`에 plan 단계 프로토타입. <a href="#">TODO로 변환 →</a></p>
+
+        <hr>
+
+        <div style="display:flex; gap:8px; align-items:center; font-size:12px; color:var(--text-muted)">
+          <span class="tag">linked: <a href="#">MVP 우선순위</a></span>
+          <span class="tag">linked: <a href="#">MCP 서버 경계</a></span>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="padding:14px">
+          <h2>관련 노트 (의미 유사)</h2>
+          <ul class="list">
+            <li><div><strong>MVP 우선순위</strong><div class="muted" style="font-size:11px">일정+TODO를 1순위로…</div></div><span class="meta">0.91</span></li>
+            <li><div><strong>MCP 서버 경계 — 도메인당 1개?</strong><div class="muted" style="font-size:11px">분리 vs 통합 트레이드오프…</div></div><span class="meta">0.87</span></li>
+            <li><div><strong>오케스트레이터 메모리 정책</strong><div class="muted" style="font-size:11px">단기/장기 메모리 분리…</div></div><span class="meta">0.81</span></li>
+            <li><div><strong>플래닝 vs 직접 호출</strong><div class="muted" style="font-size:11px">언제 plan 단계가 가치 있나…</div></div><span class="meta">0.78</span></li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px; margin-top:12px">
+          <h2>최근 노트</h2>
+          <ul class="list">
+            <li>오케스트레이터 라우팅 정책 v2 <span class="meta">12m</span></li>
+            <li>가계부 카테고리 트리 <span class="meta">어제</span></li>
+            <li>책: "Designing Data-Intensive…" 메모 <span class="meta">2일</span></li>
+            <li>4월 회고 <span class="meta">5/1</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
