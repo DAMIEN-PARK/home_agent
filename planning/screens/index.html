@@ -7,6 +7,11 @@
 </head>
 <body>
 <div class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
+  <label for="nav-toggle" class="topbar-mobile">
+    <span class="topbar-burger">☰</span>
+    <span>home·agent</span>
+  </label>
   <aside class="sidebar">
     <div class="brand">home<span class="dot">·</span>agent</div>
     <nav class="nav">
@@ -24,7 +29,9 @@
       <a href="index.html" class="active"><span class="ic">↩</span> 화면 인덱스</a>
     </nav>
     <div class="footer">v0.0.1 · planning mockup</div>
+    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
   </aside>
+  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
   <main class="main">
     <div class="page-header">
       <div>
@@ -47,6 +54,11 @@
         <h3>◐ 챗 UI</h3>
         <p class="muted">메인 진입점. 스트리밍 응답 + 어느 서브에이전트/툴이 호출됐는지 트레이스 사이드패널.</p>
         <span class="tag accent">orchestrator</span>
+      </a>
+      <a class="card" href="chat-v2.html">
+        <h3>◑ 챗 v2 · Pretext</h3>
+        <p class="muted">Pretext 텍스트 엔진으로 말풍선 shrinkwrap + tool 블록 height reflow + composer autosize. contenteditable 가능.</p>
+        <span class="tag accent">pretext-native</span>
       </a>
       <a class="card" href="schedule.html">
         <h3>▣ 일정 · 비전</h3>

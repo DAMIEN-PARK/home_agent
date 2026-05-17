@@ -7,6 +7,11 @@
 </head>
 <body>
 <div class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
+  <label for="nav-toggle" class="topbar-mobile">
+    <span class="topbar-burger">☰</span>
+    <span>home·agent</span>
+  </label>
   <aside class="sidebar">
     <div class="brand">home<span class="dot">·</span>agent</div>
     <nav class="nav">
@@ -24,7 +29,9 @@
       <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
     </nav>
     <div class="footer">v0.0.1 · planning mockup</div>
+    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
   </aside>
+  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
   <main class="main">
     <div class="page-header">
       <div>
@@ -110,7 +117,7 @@
 
     <div class="domain-chat" style="margin-top:18px">
       <div class="dc-header">
-        <h2><span class="tag accent">ideas_agent</span> 도메인 챗</h2>
+        <h2><span class="tag dom-ideas">ideas_agent</span> 도메인 챗</h2>
         <span class="dc-scope">scope: ideas.* · notes MCP only</span>
       </div>
       <div class="dc-thread">

@@ -7,6 +7,11 @@
 </head>
 <body>
 <div class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
+  <label for="nav-toggle" class="topbar-mobile">
+    <span class="topbar-burger">☰</span>
+    <span>home·agent</span>
+  </label>
   <aside class="sidebar">
     <div class="brand">home<span class="dot">·</span>agent</div>
     <nav class="nav">
@@ -24,7 +29,9 @@
       <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
     </nav>
     <div class="footer">v0.0.1 · planning mockup</div>
+    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
   </aside>
+  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
   <main class="main">
     <div class="page-header">
       <div>
@@ -38,22 +45,22 @@
     </div>
 
     <div class="grid cols-4">
-      <div class="card stat">
+      <div class="card stat dom-schedule">
         <h2>이번 주 일정</h2>
         <div class="num">12</div>
         <div class="delta">+2 vs 지난주</div>
       </div>
-      <div class="card stat">
+      <div class="card stat dom-todo">
         <h2>활성 TODO</h2>
         <div class="num">23</div>
         <div class="delta down">3건 지연</div>
       </div>
-      <div class="card stat">
+      <div class="card stat dom-ledger">
         <h2>5월 지출</h2>
         <div class="num">₩1,284k</div>
         <div class="delta up">예산 86%</div>
       </div>
-      <div class="card stat">
+      <div class="card stat dom-finance">
         <h2>순자산</h2>
         <div class="num">₩52.4M</div>
         <div class="delta up">+0.8% (월)</div>
@@ -83,20 +90,20 @@
         <table class="tbl">
           <thead><tr><th>카테고리</th><th>설명</th><th class="num">금액</th></tr></thead>
           <tbody>
-            <tr><td><span class="tag">식비</span></td><td>점심 — 김밥</td><td class="num">₩8,500</td></tr>
-            <tr><td><span class="tag">교통</span></td><td>지하철</td><td class="num">₩2,800</td></tr>
-            <tr><td><span class="tag">식비</span></td><td>저녁 — 배달</td><td class="num">₩23,000</td></tr>
-            <tr><td><span class="tag">생활</span></td><td>편의점</td><td class="num">₩8,000</td></tr>
+            <tr><td><span class="tag cat-food">식비</span></td><td>점심 — 김밥</td><td class="num">₩8,500</td></tr>
+            <tr><td><span class="tag cat-transport">교통</span></td><td>지하철</td><td class="num">₩2,800</td></tr>
+            <tr><td><span class="tag cat-food">식비</span></td><td>저녁 — 배달</td><td class="num">₩23,000</td></tr>
+            <tr><td><span class="tag cat-living">생활</span></td><td>편의점</td><td class="num">₩8,000</td></tr>
           </tbody>
         </table>
       </div>
       <div class="card">
         <h2>에이전트 활동</h2>
         <ul class="list">
-          <li><span class="tag accent">schedule</span> 다음주 일정 14건 동기화 <span class="meta">08:21</span></li>
-          <li><span class="tag accent">files</span> 사진 32장 자동 태깅 <span class="meta">07:40</span></li>
-          <li><span class="tag accent">ideas</span> "MVP 우선순위" 노트 요약 갱신 <span class="meta">07:32</span></li>
-          <li><span class="tag accent">todo</span> 지연 작업 3건 알림 <span class="meta">07:00</span></li>
+          <li><span class="tag dom-schedule">schedule</span> 다음주 일정 14건 동기화 <span class="meta">08:21</span></li>
+          <li><span class="tag dom-files">files</span> 사진 32장 자동 태깅 <span class="meta">07:40</span></li>
+          <li><span class="tag dom-ideas">ideas</span> "MVP 우선순위" 노트 요약 갱신 <span class="meta">07:32</span></li>
+          <li><span class="tag dom-todo">todo</span> 지연 작업 3건 알림 <span class="meta">07:00</span></li>
         </ul>
       </div>
     </div>

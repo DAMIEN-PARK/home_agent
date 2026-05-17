@@ -20,6 +20,23 @@
   --shadow: 0 4px 16px rgba(0,0,0,0.06);
   --mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard", Roboto, "Apple SD Gothic Neo", sans-serif;
+
+  /* ─── Domain accents (Tailwind palette) ─────────────────── */
+  --domain-schedule: #7c3aed;          --domain-schedule-soft: #f5f3ff;  /* violet-600 / 50 */
+  --domain-todo:     #0891b2;          --domain-todo-soft:     #ecfeff;  /* cyan-600 / 50 */
+  --domain-ledger:   var(--success);   --domain-ledger-soft:   #ecfdf5;  /* alias green-600 */
+  --domain-finance:  #854d0e;          --domain-finance-soft:  #fef3c7;  /* yellow-800 / 50, WCAG 6.16 */
+  --domain-ideas:    #a21caf;          --domain-ideas-soft:    #fae8ff;  /* fuchsia-700 / 100 */
+  --domain-files:    #475569;          --domain-files-soft:    #f1f5f9;  /* slate-600 / 100 */
+
+  /* ─── Ledger categories ─────────────────────────────────── */
+  --cat-food:      #9a3412;            --cat-food-soft:    #ffedd5;  /* orange-800 / 50, WCAG 6.37 */
+  --cat-transport: #0369a1;            --cat-transport-soft:#e0f2fe;  /* sky-700 / 100 */
+  --cat-living:    #4d7c0f;            --cat-living-soft:  #ecfccb;  /* lime-700 / 100 */
+  --cat-leisure:   #be185d;            --cat-leisure-soft: #fce7f3;  /* pink-700 / 100 */
+  --cat-medical:   var(--danger);      --cat-medical-soft: #fef2f2;  /* alias red-600 */
+  --cat-fixed:     var(--text-muted);  --cat-fixed-soft:   var(--surface-2);  /* alias */
+  --cat-misc:      var(--text-faint);  --cat-misc-soft:    var(--bg);  /* alias */
 }
 
 * { box-sizing: border-box; }
@@ -210,6 +227,34 @@ ul.list .meta { margin-left: auto; color: var(--text-faint); font-family: var(--
 .tag.success { background: #ecfdf5; color: #047857; }
 .tag.warn { background: #fffbeb; color: #b45309; }
 .tag.danger { background: #fef2f2; color: #b91c1c; }
+
+/* Domain modifiers */
+.tag.dom-schedule { background: var(--domain-schedule-soft); color: var(--domain-schedule); }
+.tag.dom-todo     { background: var(--domain-todo-soft);     color: var(--domain-todo); }
+.tag.dom-ledger   { background: var(--domain-ledger-soft);   color: var(--domain-ledger); }
+.tag.dom-finance  { background: var(--domain-finance-soft);  color: var(--domain-finance); }
+.tag.dom-ideas    { background: var(--domain-ideas-soft);    color: var(--domain-ideas); }
+.tag.dom-files    { background: var(--domain-files-soft);    color: var(--domain-files); }
+
+/* Category modifiers */
+.tag.cat-food      { background: var(--cat-food-soft);      color: var(--cat-food); }
+.tag.cat-transport { background: var(--cat-transport-soft); color: var(--cat-transport); }
+.tag.cat-living    { background: var(--cat-living-soft);    color: var(--cat-living); }
+.tag.cat-leisure   { background: var(--cat-leisure-soft);   color: var(--cat-leisure); }
+.tag.cat-medical   { background: var(--cat-medical-soft);   color: var(--cat-medical); }
+.tag.cat-fixed     { background: var(--cat-fixed-soft);     color: var(--cat-fixed); }
+.tag.cat-misc      { background: var(--cat-misc-soft);      color: var(--cat-misc); }
+
+/* Stat card domain border-left */
+.card.stat.dom-schedule { border-left: 4px solid var(--domain-schedule); }
+.card.stat.dom-todo     { border-left: 4px solid var(--domain-todo); }
+.card.stat.dom-ledger   { border-left: 4px solid var(--domain-ledger); }
+.card.stat.dom-finance  { border-left: 4px solid var(--domain-finance); }
+.card.stat.dom-ideas    { border-left: 4px solid var(--domain-ideas); }
+.card.stat.dom-files    { border-left: 4px solid var(--domain-files); }
+
+/* Mobile drawer — hidden by default on desktop */
+.nav-toggle, .topbar-mobile, .sidebar-close, .nav-backdrop { display: none; }
 
 /* ---------- Tables ---------- */
 table.tbl {
@@ -701,9 +746,70 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
 .rail-now-row .stamp { color: var(--accent); font-weight: 600; }
 .rail-now-row .label { color: var(--accent); font-weight: 600; font-size: 12px; }
 
-@media (max-width: 1100px) {
-  .with-rail { grid-template-columns: 1fr; }
+/* ───── Mobile (≤820px) ─────────────────────────────────────
+   Single breakpoint, JS-free drawer via checkbox hack.
+   See: docs/superpowers/specs/2026-05-17-mockup-color-tokens-mobile.md
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  /* Layout single column */
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-areas: "topbar" "main";
+  }
+
+  /* Topbar (label-as-button toggles checkbox) */
+  .topbar-mobile {
+    display: flex; align-items: center; gap: 12px;
+    grid-area: topbar;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono); font-size: 14px;
+    cursor: pointer;
+    position: sticky; top: 0; z-index: 25;
+  }
+  .topbar-burger { font-size: 18px; }
+  .main { grid-area: main; padding: 16px; max-width: 100%; }
+
+  /* Sidebar → fixed off-canvas drawer */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 260px; height: 100vh;
+    transform: translateX(-100%);
+    transition: transform .18s ease;
+    z-index: 40;
+    box-shadow: var(--shadow);
+  }
+  .sidebar-close {
+    display: block; position: absolute; top: 12px; right: 12px;
+    font-size: 18px; color: var(--text-muted); cursor: pointer;
+    background: transparent; border: 0; padding: 4px 8px;
+  }
+
+  /* Backdrop (label-as-button closes drawer on click) */
+  .nav-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0, 0, 0, .35); z-index: 35;
+    cursor: pointer;
+  }
+
+  /* Checkbox-hack: when checked, drawer slides in + backdrop shows */
+  .nav-toggle:checked ~ .sidebar { transform: translateX(0); }
+  .nav-toggle:checked ~ .nav-backdrop { display: block; }
+
+  /* Grid columns collapse */
+  .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
+
+  /* Page header vertical */
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .page-header .actions { width: 100%; flex-wrap: wrap; }
+
+  /* Chat + rail single column (was 1100px breakpoint, now unified) */
+  .chat-wrap, .with-rail { grid-template-columns: 1fr; height: auto; }
   .rail { position: static; max-height: none; }
+
+  /* Kanban single column */
+  .kanban { grid-template-columns: 1fr; }
 }
 
 /* ---------- Misc ---------- */

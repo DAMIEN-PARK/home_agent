@@ -7,6 +7,11 @@
 </head>
 <body>
 <div class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
+  <label for="nav-toggle" class="topbar-mobile">
+    <span class="topbar-burger">☰</span>
+    <span>home·agent</span>
+  </label>
   <aside class="sidebar">
     <div class="brand">home<span class="dot">·</span>agent</div>
     <nav class="nav">
@@ -24,7 +29,9 @@
       <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
     </nav>
     <div class="footer">v0.0.1 · planning mockup</div>
+    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
   </aside>
+  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
   <main class="main">
     <div class="page-header">
       <div>
@@ -110,8 +117,8 @@
         <div class="card">
           <h2>활성 컨텍스트</h2>
           <ul class="list">
-            <li><span class="tag accent">schedule</span> calendar:default <span class="meta">읽기/쓰기</span></li>
-            <li><span class="tag accent">ledger</span> 5월 거래 <span class="meta">읽기</span></li>
+            <li><span class="tag dom-schedule">schedule</span> calendar:default <span class="meta">읽기/쓰기</span></li>
+            <li><span class="tag dom-ledger">ledger</span> 5월 거래 <span class="meta">읽기</span></li>
             <li><span class="tag">memory</span> 최근 7일 <span class="meta">RAG</span></li>
           </ul>
         </div>

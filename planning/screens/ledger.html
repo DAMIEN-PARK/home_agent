@@ -7,6 +7,11 @@
 </head>
 <body>
 <div class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
+  <label for="nav-toggle" class="topbar-mobile">
+    <span class="topbar-burger">☰</span>
+    <span>home·agent</span>
+  </label>
   <aside class="sidebar">
     <div class="brand">home<span class="dot">·</span>agent</div>
     <nav class="nav">
@@ -24,7 +29,9 @@
       <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
     </nav>
     <div class="footer">v0.0.1 · planning mockup</div>
+    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
   </aside>
+  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
   <main class="main">
     <div class="page-header">
       <div>
@@ -67,13 +74,13 @@
         <table class="tbl">
           <thead><tr><th>카테고리</th><th class="num">예산</th><th class="num">사용</th><th class="num">%</th></tr></thead>
           <tbody>
-            <tr><td><span class="tag">식비</span></td><td class="num">400,000</td><td class="num">384,200</td><td class="num">96</td></tr>
-            <tr><td><span class="tag">교통</span></td><td class="num">120,000</td><td class="num">68,400</td><td class="num">57</td></tr>
-            <tr><td><span class="tag">생활</span></td><td class="num">200,000</td><td class="num">131,800</td><td class="num">66</td></tr>
-            <tr><td><span class="tag">문화/여가</span></td><td class="num">150,000</td><td class="num">42,000</td><td class="num">28</td></tr>
-            <tr><td><span class="tag">의료</span></td><td class="num">80,000</td><td class="num">112,400</td><td class="num">140 ⚠</td></tr>
-            <tr><td><span class="tag">고정비</span></td><td class="num">450,000</td><td class="num">442,000</td><td class="num">98</td></tr>
-            <tr><td><span class="tag">기타</span></td><td class="num">100,000</td><td class="num">103,500</td><td class="num">104</td></tr>
+            <tr><td><span class="tag cat-food">식비</span></td><td class="num">400,000</td><td class="num">384,200</td><td class="num">96</td></tr>
+            <tr><td><span class="tag cat-transport">교통</span></td><td class="num">120,000</td><td class="num">68,400</td><td class="num">57</td></tr>
+            <tr><td><span class="tag cat-living">생활</span></td><td class="num">200,000</td><td class="num">131,800</td><td class="num">66</td></tr>
+            <tr><td><span class="tag cat-leisure">문화/여가</span></td><td class="num">150,000</td><td class="num">42,000</td><td class="num">28</td></tr>
+            <tr><td><span class="tag cat-medical">의료</span></td><td class="num">80,000</td><td class="num">112,400</td><td class="num">140 ⚠</td></tr>
+            <tr><td><span class="tag cat-fixed">고정비</span></td><td class="num">450,000</td><td class="num">442,000</td><td class="num">98</td></tr>
+            <tr><td><span class="tag cat-misc">기타</span></td><td class="num">100,000</td><td class="num">103,500</td><td class="num">104</td></tr>
           </tbody>
         </table>
       </div>
@@ -106,13 +113,13 @@
       <table class="tbl">
         <thead><tr><th>일자</th><th>설명</th><th>카테고리</th><th>결제수단</th><th class="num">금액</th></tr></thead>
         <tbody>
-          <tr><td class="mono">5/15</td><td>점심 — 김밥</td><td><span class="tag">식비</span></td><td>체크카드</td><td class="num">8,500</td></tr>
-          <tr><td class="mono">5/14</td><td>지하철</td><td><span class="tag">교통</span></td><td>교통카드</td><td class="num">2,800</td></tr>
-          <tr><td class="mono">5/14</td><td>저녁 배달 — 치킨</td><td><span class="tag">식비</span></td><td>신용카드</td><td class="num">23,000</td></tr>
-          <tr><td class="mono">5/14</td><td>편의점</td><td><span class="tag">생활</span></td><td>체크카드</td><td class="num">8,000</td></tr>
-          <tr><td class="mono">5/13</td><td>월세</td><td><span class="tag">고정비</span></td><td>자동이체</td><td class="num">450,000</td></tr>
-          <tr><td class="mono">5/13</td><td>병원 진료비</td><td><span class="tag danger">의료</span></td><td>신용카드</td><td class="num">38,000</td></tr>
-          <tr><td class="mono">5/12</td><td>장보기 — 마트</td><td><span class="tag">식비</span></td><td>체크카드</td><td class="num">62,400</td></tr>
+          <tr><td class="mono">5/15</td><td>점심 — 김밥</td><td><span class="tag cat-food">식비</span></td><td>체크카드</td><td class="num">8,500</td></tr>
+          <tr><td class="mono">5/14</td><td>지하철</td><td><span class="tag cat-transport">교통</span></td><td>교통카드</td><td class="num">2,800</td></tr>
+          <tr><td class="mono">5/14</td><td>저녁 배달 — 치킨</td><td><span class="tag cat-food">식비</span></td><td>신용카드</td><td class="num">23,000</td></tr>
+          <tr><td class="mono">5/14</td><td>편의점</td><td><span class="tag cat-living">생활</span></td><td>체크카드</td><td class="num">8,000</td></tr>
+          <tr><td class="mono">5/13</td><td>월세</td><td><span class="tag cat-fixed">고정비</span></td><td>자동이체</td><td class="num">450,000</td></tr>
+          <tr><td class="mono">5/13</td><td>병원 진료비</td><td><span class="tag cat-medical">의료</span></td><td>신용카드</td><td class="num">38,000</td></tr>
+          <tr><td class="mono">5/12</td><td>장보기 — 마트</td><td><span class="tag cat-food">식비</span></td><td>체크카드</td><td class="num">62,400</td></tr>
         </tbody>
       </table>
     </div>
@@ -125,7 +132,7 @@
 
     <div class="domain-chat" style="margin-top:18px">
       <div class="dc-header">
-        <h2><span class="tag accent">ledger_agent</span> 도메인 챗</h2>
+        <h2><span class="tag dom-ledger">ledger_agent</span> 도메인 챗</h2>
         <span class="dc-scope">scope: ledger.* · ledger MCP only</span>
       </div>
       <div class="dc-thread">

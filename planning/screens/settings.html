@@ -75,6 +75,11 @@
 </head>
 <body>
 <div class="app">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
+  <label for="nav-toggle" class="topbar-mobile">
+    <span class="topbar-burger">☰</span>
+    <span>home·agent</span>
+  </label>
   <aside class="sidebar">
     <div class="brand">home<span class="dot">·</span>agent</div>
     <nav class="nav">
@@ -92,7 +97,9 @@
       <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
     </nav>
     <div class="footer">v0.0.1 · planning mockup</div>
+    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
   </aside>
+  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
 
   <main class="main">
     <div class="page-header">
@@ -216,42 +223,42 @@
         <tbody>
           <tr>
             <td><strong>schedule-mcp</strong></td>
-            <td><span class="tag accent">schedule</span></td>
+            <td><span class="tag dom-schedule">schedule</span></td>
             <td class="mono faint">stdio · ./mcp/schedule</td>
             <td><button class="toggle on">on</button></td>
             <td class="num"><a href="#">설정</a></td>
           </tr>
           <tr>
             <td><strong>todo-mcp</strong></td>
-            <td><span class="tag accent">todo</span></td>
+            <td><span class="tag dom-todo">todo</span></td>
             <td class="mono faint">stdio · ./mcp/todo</td>
             <td><button class="toggle on">on</button></td>
             <td class="num"><a href="#">설정</a></td>
           </tr>
           <tr>
             <td><strong>ledger-mcp</strong></td>
-            <td><span class="tag accent">ledger</span></td>
+            <td><span class="tag dom-ledger">ledger</span></td>
             <td class="mono faint">stdio · ./mcp/ledger</td>
             <td><button class="toggle on">on</button></td>
             <td class="num"><a href="#">설정</a></td>
           </tr>
           <tr>
             <td><strong>finance-mcp</strong></td>
-            <td><span class="tag accent">finance</span></td>
+            <td><span class="tag dom-finance">finance</span></td>
             <td class="mono faint">stdio · ./mcp/finance</td>
             <td><button class="toggle on">on</button></td>
             <td class="num"><a href="#">설정</a></td>
           </tr>
           <tr>
             <td><strong>ideas-mcp</strong></td>
-            <td><span class="tag accent">ideas</span></td>
+            <td><span class="tag dom-ideas">ideas</span></td>
             <td class="mono faint">stdio · ./mcp/ideas</td>
             <td><button class="toggle on">on</button></td>
             <td class="num"><a href="#">설정</a></td>
           </tr>
           <tr>
             <td><strong>files-mcp</strong></td>
-            <td><span class="tag accent">files</span></td>
+            <td><span class="tag dom-files">files</span></td>
             <td class="mono faint">stdio · ./mcp/files</td>
             <td><button class="toggle on">on</button></td>
             <td class="num"><a href="#">설정</a></td>
@@ -385,7 +392,7 @@
         <tbody>
           <tr>
             <td>식비</td>
-            <td><span class="swatch" style="background:#f97316"></span><span class="mono faint">#f97316</span></td>
+            <td><span class="swatch" style="background:var(--cat-food)"></span><span class="mono faint">#9a3412</span></td>
             <td class="num">₩400,000</td>
             <td class="num">384,200</td>
             <td class="num">96</td>
@@ -393,7 +400,7 @@
           </tr>
           <tr>
             <td>교통</td>
-            <td><span class="swatch" style="background:#3b82f6"></span><span class="mono faint">#3b82f6</span></td>
+            <td><span class="swatch" style="background:var(--cat-transport)"></span><span class="mono faint">#0369a1</span></td>
             <td class="num">₩120,000</td>
             <td class="num">68,400</td>
             <td class="num">57</td>
@@ -401,7 +408,7 @@
           </tr>
           <tr>
             <td>생활</td>
-            <td><span class="swatch" style="background:#10b981"></span><span class="mono faint">#10b981</span></td>
+            <td><span class="swatch" style="background:var(--cat-living)"></span><span class="mono faint">#4d7c0f</span></td>
             <td class="num">₩200,000</td>
             <td class="num">131,800</td>
             <td class="num">66</td>
@@ -409,7 +416,7 @@
           </tr>
           <tr>
             <td>문화/여가</td>
-            <td><span class="swatch" style="background:#a855f7"></span><span class="mono faint">#a855f7</span></td>
+            <td><span class="swatch" style="background:var(--cat-leisure)"></span><span class="mono faint">#be185d</span></td>
             <td class="num">₩150,000</td>
             <td class="num">42,000</td>
             <td class="num">28</td>
@@ -417,7 +424,7 @@
           </tr>
           <tr>
             <td>의료</td>
-            <td><span class="swatch" style="background:#ef4444"></span><span class="mono faint">#ef4444</span></td>
+            <td><span class="swatch" style="background:var(--cat-medical)"></span><span class="mono faint">#dc2626</span></td>
             <td class="num">₩100,000</td>
             <td class="num">112,400</td>
             <td class="num">112</td>
@@ -425,7 +432,7 @@
           </tr>
           <tr>
             <td>고정비</td>
-            <td><span class="swatch" style="background:#6b7280"></span><span class="mono faint">#6b7280</span></td>
+            <td><span class="swatch" style="background:var(--cat-fixed)"></span><span class="mono faint">#78716c</span></td>
             <td class="num">₩450,000</td>
             <td class="num">442,000</td>
             <td class="num">98</td>
@@ -433,7 +440,7 @@
           </tr>
           <tr>
             <td>기타</td>
-            <td><span class="swatch" style="background:#a8a29e"></span><span class="mono faint">#a8a29e</span></td>
+            <td><span class="swatch" style="background:var(--cat-misc)"></span><span class="mono faint">#a8a29e</span></td>
             <td class="num">₩100,000</td>
             <td class="num">103,500</td>
             <td class="num">104</td>
