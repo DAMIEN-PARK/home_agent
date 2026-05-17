@@ -77,43 +77,62 @@
 - **Non-goal (Phase 1 scope 외)**: `ChatService`는 chat 라우터만 소비. `events.py`/`oauth.py`의 service 추출은 별도 ralplan. session/persistence 로직을 다른 도메인에서 재사용할 필요가 실측 발생할 때만 별도 ralplan으로 분리 검토 (지금은 single consumer — YAGNI).
 - **Spec 진입 명령** (실행 완료): `/oh-my-claudecode:ralplan "chat.py 다층 서비스 분리: ChatService + SessionService + MessagePersistenceService"` → Phase 1 ralplan 결과 단일 ChatService로 수정됨. Spec: `docs/superpowers/specs/2026-05-17-chat-service-extraction-design.md`.
 
-### Phase 4 — React Tailwind 토큰 이식 + 도메인 챗 border 포팅
+### Phase 4 — React Tailwind 토큰 이식 (border 포팅은 Phase 4.5로 이관)
 
-- **Entry**: Phase 1 머지 후. (실제 데이터 의존성은 없으나 사용자 명시 순서 준수 + 백엔드 인지 표면 축소 후 React 작업이 더 명확.)
-- **결과물**:
-  - `frontend/tailwind.config.ts`의 `theme: { extend: {} }` (현재 비어있음)에 mockup spec §7 블록 등록:
-    - `colors.domain.{schedule, todo, ledger, finance, ideas, files}` (각 base + soft pair)
-    - `colors.cat.{food, transport, living, leisure, medical, fixed, misc}` (각 base + soft pair)
-    - **hex 직접 등록** (opacity modifier 호환 — mockup spec §3 결정)
-  - `Chat.tsx`, `Calendar.tsx`에 `bg-domain-*` / `bg-cat-*` / `text-domain-*` / `border-domain-*` utility 적용 (대응 mockup 화면과 같은 도메인 색)
-  - commit `890825f`의 `.domain-chat.dom-*` border-left 패턴 포팅 — `Chat.tsx`의 도메인 인라인 챗 영역에 동등 시각 표현 (좌측 4px solid var(--domain-*))
-- **Tailwind SSOT 채택** (v3 결정): `tailwind.config.ts`가 React 측 컬러 SSOT. `index.css`/`tokens.css`와 1:1 매핑 요구 폐기 — 현재 `frontend/src/index.css`에 `--domain-*`/`--cat-*` 변수 0개, hex 0개 (매핑 대상 부재). Tailwind utility가 유일한 consumption surface.
-- **Acceptance**:
-  - (a) **Hex byte-diff**: `tailwind.config.ts`의 `theme.extend.colors`가 mockup spec §7 (lines 51-65) hex 값 byte-for-byte 일치. 수동 diff (검토자가 spec 파일과 config 파일 양쪽 열어 13쌍 hex 일치 확인).
-  - (b) **구조 게이트 (key-position 강화, comment line 게임 차단)**:
-    - `grep -E "^\s*['\"]domain-(schedule|todo|ledger|finance|ideas|files)['\"]\s*:" frontend/tailwind.config.ts | wc -l` ≥ 6 (각 도메인 키 1줄, 6개)
-    - `grep -E "^\s*['\"]cat-(food|transport|living|leisure|medical|fixed|misc)['\"]\s*:" frontend/tailwind.config.ts | wc -l` ≥ 7 (각 카테고리 키 1줄, 7개)
-    - soft pair는 nested object 내부이므로 별도 카운트 안 함; (a) byte-diff가 soft 페어 존재까지 보장
-  - (c) **utility 사용 게이트**: `grep -rn "bg-domain-\|bg-cat-\|text-domain-\|border-domain-" frontend/src --include="*.tsx"` → 최소 4건 (Chat.tsx + Calendar.tsx)
-  - (d) **border port 게이트** (890825f 패턴): `grep -E "border-l-4 border-domain-" frontend/src/pages/Chat.tsx` → 각 도메인 챗 영역 렌더링부에 ≥1 매치
-  - (e) **수동 비주얼 confirm**: Mid-gate 4 스크린샷에서 Chat·Calendar 페이지가 mockup 대응 화면과 같은 도메인 색
-- **Spec 진입 명령**: `/oh-my-claudecode:ralplan "frontend Tailwind 토큰 이식: theme.extend.colors + Chat/Calendar 페이지 hex→utility + 890825f domain-chat border 포팅"`
+**Wording history**: 원안은 "Tailwind 토큰 + Chat/Calendar hex→utility + **890825f .domain-chat.dom-* border 포팅**" mandate였으나, Phase 4 ralplan (`docs/superpowers/specs/2026-05-17-frontend-tailwind-tokens-design.md`) Architect steelman으로 React에 도메인 페이지(Schedule.tsx 등) 미존재 → border 포팅 대상 컴포넌트 부재 판명. v3에서 **단일 ChatService 추출(MA-3)과 동일 패턴**으로 deferred + Phase 4.5 신설. MA-4 (ii) 정합 (prerequisite 컴포넌트 부재). 본 §Phase 4 wording은 Phase 4 머지(commit `abef6c8`) 직후 정정됨.
 
-### Mid-gate — Phase 4 직후 mandatory mini-verify (신규, v2)
+- **Entry**: Phase 1 머지 후.
+- **단일 atomic 작업 (3 파일)**:
+  - `frontend/tailwind.config.ts`: `theme.extend.colors`에 mockup spec §7 lines 286-309 블록 byte-equal 등록 (6 도메인 + 7 카테고리, 각 `{DEFAULT, soft}` 페어, **hex 직접 — opacity modifier 호환**, mockup spec §3 결정).
+  - `frontend/src/pages/Calendar.tsx`: 월 헤더 `text-domain-schedule` + local event `border-domain-schedule` (2-consumer end-to-end proof).
+  - `frontend/src/components/Sidebar.tsx`: `flex flex-col` → `hidden md:flex flex-col` (모바일 hide, mid-gate screenshot 의미 확보).
+- **Chat.tsx 변경 0**: orchestrator entry, 도메인 context 부재. Tailwind indigo-600 = mockup `--accent #4f46e5` 정확 일치 → 변경 무의미.
+- **Tailwind SSOT 채택**: `tailwind.config.ts`가 React 측 컬러 SSOT. `index.css`/`tokens.css`와 1:1 매핑 요구 폐기 — 현재 `frontend/src/index.css`에 `--domain-*`/`--cat-*` 변수 0개, hex 0개 (매핑 대상 부재).
+- **Acceptance** (Phase 4 ralplan §3 그대로):
+  - (a-1) **구조 게이트 (automated grep)**: domain 키 6 / cat 키 7 / DEFAULT ≥13 / soft ≥13
+  - (a-2) **수동 byte-equal diff**: mockup spec §7 (lines 286-309) vs `tailwind.config.ts theme.extend.colors` 26 hex 일치
+  - (c) **utility 소비처 ≥2** (Calendar.tsx 단독 — fabricated UI 금지): `grep -cE "(bg|text|border)-(domain|cat)-" frontend/src/pages/Calendar.tsx` ≥ 2
+  - (d) ~~border-l-4 border-domain- in Chat.tsx~~ → **DEFERRED to Phase 4.5: First domain page (Schedule.tsx)**
+  - (e) Calendar.tsx `border-domain-schedule` ≥1
+  - (f) Sidebar.tsx `hidden md:flex` ≥1
+  - (g) Mid-gate 4 스크린샷 — 아래 §Mid-gate 참조
+  - (h) `npm run build` exit 0, (i) `npm run test` 그린, (j) `package.json`/`lock` 무변동
+- **Spec 진입 명령** (실행 완료): `/oh-my-claudecode:ralplan "frontend Tailwind 토큰 이식: theme.extend.colors + Chat/Calendar 페이지 hex→utility + 890825f domain-chat border 포팅"` → border 포팅 부분은 Phase 4.5로 이관됨. Spec: `docs/superpowers/specs/2026-05-17-frontend-tailwind-tokens-design.md`. Implementation commit: `abef6c8`.
+
+### Mid-gate — Phase 4 직후 mandatory mini-verify (Phase 4 ralplan에서 scope 조정됨)
 
 - **What**: Chat.tsx + Calendar.tsx × {desktop 1440, mobile 390} = 4 스크린샷
 - **Pass criteria**:
-  - 토큰 매핑 일치 (대응 mockup 화면과 같은 색)
-  - 모바일 drawer 동작 정상 (820px breakpoint)
-  - **Console error 0** — capture method: (i) browse 도구로 navigate 후 `console.errors()` 호출 결과 빈 배열, OR (ii) 수동 Chrome DevTools console 비어있음 스크린샷. 1인 환경 — 둘 중 편한 쪽.
+  - 토큰 매핑 일치 (대응 mockup 화면과 같은 색): Calendar 월 헤더 보라색 + local event 보라색 + google event 초록색 + Chat 색 무변동(indigo)
+  - **Sidebar 모바일 hide** (`hidden md:flex` 적용 확인) — drawer 자체는 Phase 4.5+로 deferred (React에 drawer toggle 미구현, Sidebar.tsx always-visible이었음)
+  - **Console error 0** — capture method: (i) browse 도구 `console.errors()` 빈 배열, OR (ii) Chrome DevTools console 비어있음 스크린샷. 1인 환경 — 둘 중 편한 쪽.
 - **Cost**: ~15min. 자동화 불가 (시각 검증).
 - **Record**: 결과는 commit message 또는 PR 본문에 기록.
-- **Fail**: Phase 5 진입 전 fix. (Phase 5 entry condition에 mid-verify pass 포함)
+- **Fail**: Phase 4.5 진입 전 fix. 거부 시 Phase 4 ralplan §5 Risk #2 fallback (day-of-week header `bg-stone-50` → `bg-domain-schedule-soft`) 적용.
+
+### Phase 4.5 — First domain page (Schedule.tsx) + .domain-chat border 포팅 (신규)
+
+**신설 사유**: Phase 4 ralplan Architect 발견 — 메타-로드맵 §Phase 4 결과물의 "Chat.tsx 도메인 인라인 챗 영역 border 포팅"이 도메인 페이지 React 부재로 적용 불가. Tailwind 토큰은 이미 Phase 4에서 등록되어 즉시 사용 가능. Phase 4.5는 첫 도메인 페이지 1개(Schedule.tsx)에서 토큰 + border 패턴이 작동함을 입증.
+
+- **Entry**: Phase 4 머지 (`abef6c8`) + Mid-gate pass
+- **결과물**:
+  - `frontend/src/pages/Schedule.tsx` 신규 (mockup `planning/screens/schedule.html`의 React 이식 — 캘린더 + 도메인 챗 영역)
+  - 도메인 챗 영역에 `<div className="border-l-4 border-domain-schedule ...">` 적용 (mockup `_shared/style.css:440` `.domain-chat.dom-schedule` border-left 패턴 React 등가)
+  - `App.tsx` 라우터에 `/schedule` 추가, `Sidebar.tsx`에 NavLink 추가
+- **Acceptance**:
+  - `grep -E "border-l-4 border-domain-schedule" frontend/src/pages/Schedule.tsx` ≥1 (메타-로드맵 §Phase 4 acceptance (d)의 이관 충족)
+  - Schedule.tsx mid-verify: desktop 1440 + mobile 390 스크린샷 + console error 0
+  - 기존 Chat/Calendar 회귀 없음 (test 4건 그대로 그린)
+- **Out of scope (Phase 4.5)**:
+  - 나머지 5개 도메인 페이지 (todo/ledger/finance/ideas/files) — 별도 phase
+  - 모바일 drawer toggle — 별도 UX phase
+  - Schedule.tsx의 backend 연동 깊이 — events list 표시까지만, CRUD는 후속
+- **Spec 진입 명령**: `/oh-my-claudecode:ralplan "Schedule.tsx 첫 도메인 페이지 + .domain-chat border 포팅"`
 
 ### Phase 5 — Todoist 연동 (todo 에이전트 외부 백엔드)
 
 - **Entry**:
-  - Phase 4 머지 + mid-verify pass
+  - Phase 4 머지 + Mid-gate pass + **Phase 4.5 머지** (Schedule.tsx + .domain-chat border 포팅 — 메타-로드맵 §Phase 4 acceptance (d) 이관 충족)
   - **Task 모델 migration spec 작성 완료** (entry gate, in-phase 결정 아님) — Phase 5 ralplan 시작 전 별도 짧은 spec
 - **Migration scope (entry gate)**: `backend/app/db/models/todo.py:43` Task 모델에 `source: str` + `external_id: str | None` + `UniqueConstraint("user_id", "source", "external_id")` 추가 — `backend/app/db/models/schedule.py:14,25-26` events 패턴 미러. Alembic migration 별도.
 - **선행 패턴**: `schedule_agent ↔ Google Calendar` (`backend/app/services/calendar_sync.py::sync_user_google_calendar`, `schedule_service.py::upsert_google_event`)와 동형.
@@ -155,16 +174,22 @@
 
 ## 3. Sequence Flow
 
+사용자 명시 원안 시퀀스 **1→4→5→2→3은 유지**. Phase 4.5는 4의 자연 연장 sub-phase로 표기 (5→2→3 시퀀스 의미 불변, phase 카운트만 +1).
+
 ```
 Phase 1 (chat.py 로컬리티 리팩터, contract-invariant)
    │
    │ 백엔드 인지 표면 축소
    ▼
-Phase 4 (Tailwind theme.extend + hex→utility + 890825f border 포팅)
+Phase 4 (Tailwind theme.extend + Calendar 2-consumer + Sidebar 모바일 hide)
    │
    │ ━━━ Mid-gate (mandatory) ━━━
    │     Chat/Calendar × desktop/mobile = 4 스크린샷, ~15min
-   │     console error 0, drawer 동작, 토큰 매핑 일치
+   │     console error 0, 토큰 매핑 일치, Sidebar 모바일 hide 확인
+   ▼
+Phase 4.5 (Schedule.tsx 첫 도메인 페이지 + .domain-chat border 포팅)
+   │
+   │ 메타-로드맵 §Phase 4 acceptance (d) 이관 충족
    ▼
 Phase 5 (Todoist 연동)
    │ entry gate: Task.source/external_id migration spec 완료
@@ -239,6 +264,26 @@ Phase 3 (mockup + 신규 컴포넌트 full 시각 회귀 검증)
 **Consequence**: 향후 외부 통합 service (Phase 5 Todoist 등)도 동일 flat 패턴으로 진입. 만약 session/persistence를 정말 다른 도메인에서 재사용해야 한다면 그 시점에 별도 ralplan으로 분리 검토 (지금 분리는 금지).
 
 **Precedent commit**: `60f6733 refactor(chat): extract ChatService + slim router (Phase 1)`
+
+### MA-4: General deviation protocol (approved roadmap items become advisory)
+
+**Decision**: Approved roadmap line items become advisory when subsequent verified state contradicts them; deviation requires (a) post-hoc amendment commit, (b) ADR entry naming the deviation + reason + successor phase.
+
+**Permitted only when**:
+- (i) deviation is forced by CLAUDE.md project rule (e.g., §2 "no abstractions for single-use code", §3 "surgical changes"), OR
+- (ii) deviation is forced by missing prerequisite state **that was explicitly named in a prior approved phase and is verifiably absent in the codebase at the time of deviation** (e.g., `_chat_input.py` was absent in Phase 1, domain page React routes were absent in Phase 4)
+
+**Rationale**:
+- 메타-로드맵은 합의 artifact이지만 frozen 명세 아님. 실제 verified state과 충돌 시 strict adherence는 CLAUDE.md project rule 위반 강제 → 본 메타 합의보다 project rule 우선.
+- 단 (i)/(ii) 조건 외 임의 deviation은 금지 (drift 방지). 후속 phase는 본 protocol을 evidence trail로 사용.
+
+**Permitted patterns observed**:
+- Phase 1 (MA-3): 3-service mandate → 단일 ChatService (CLAUDE.md §2 force)
+- Phase 4: Chat.tsx border 포팅 + 모바일 drawer mandate → Phase 4.5로 이관 (MA-4 (ii): prerequisite Schedule.tsx + drawer 미존재)
+
+**Precedent commits**:
+- Phase 1: `60f6733` + `74b31ad docs(planning): correct §Phase 1 — single ChatService`
+- Phase 4: `abef6c8 feat(frontend): port mockup color tokens to Tailwind + Calendar consumers (Phase 4)` + 본 후처리 commit
 
 ---
 
