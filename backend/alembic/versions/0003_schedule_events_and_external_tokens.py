@@ -9,7 +9,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 revision = "0003"
-down_revision = "0002"
+down_revision = "0002_core_memory_todo"
 branch_labels = None
 depends_on = None
 
