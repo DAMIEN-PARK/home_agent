@@ -46,18 +46,22 @@
 
 각 phase는 **진입 시 자체 ralplan을 호출**해 implementation spec을 만든다. 본 로드맵은 entry/exit/acceptance gate만 정의.
 
-### Phase 1 — Backend chat.py 로컬리티 리팩터 (다층 서비스 분리)
+### Phase 1 — Backend chat.py 로컬리티 리팩터 (단일 ChatService 추출)
+
+**Wording history**: v3.2 원안은 "다층 분리 — ChatService + SessionService + MessagePersistenceService" mandate였으나, Phase 1 ralplan (`docs/superpowers/specs/2026-05-17-chat-service-extraction-design.md`) Architect steelman으로 3-service split은 CLAUDE.md §2 ("speculative abstraction for single-use code") 위반으로 판명. Phase 1 v2에서 **단일 ChatService flat class** (TodoService 패턴 정확 일치)로 collapse. 본 §Phase 1 wording은 Phase 1 머지(commit 60f6733) 직후 정정됨. 결정 근거는 신규 **MA-3** 참조.
 
 - **Entry**: working tree clean. Main HEAD = current (5/17 작업 종료 기준; SHA pin 제거 — 시간 흐름에 따라 stale 방지).
-- **다층 분리 (이미 결정)**: `ChatService`(orchestrator/domain dispatch) + `SessionService`(device/scope 세션) + `MessagePersistenceService`(turn + 첨부).
-- **이동 대상 헬퍼 (6개 → 5개 service 이동 + 1개 router 잔존)**:
-  - service로 이동: `_parse_input` (multipart), `_get_or_create_scoped_session`, `_save_attachments`, `_persist_turn`, `_load_recent_messages`
-  - router 잔존: `_header_uuid` — HTTP request 헤더 파싱은 라우터 책임 (service에 Request 의존성 주입 회피)
+- **단일 ChatService 추출**: `ChatService` 1개 class (TodoService 패턴), session lifecycle + attachments + context loading + turn persistence + 2 public entry points(run_orchestrator/run_domain) 모두 internal section으로 조직.
+- **이동 대상 헬퍼 (6개 → 5개 service + 1개 HTTP-input module)**:
+  - `ChatService`로 이동: `_get_or_create_scoped_session`, `_save_attachments`, `_persist_turn`, `_load_recent_messages` (4개) + `_files = FilesAgent()` module singleton
+  - `backend/app/api/_chat_input.py`로 이동: `_parse_input` → `parse_input`, `_ParsedInput` → `ParsedInput` (`@dataclass(slots=True)`), `_header_uuid` (HTTP request 헤더 파싱은 라우터 영역 유지)
 - **결과물**:
-  - `backend/app/services/chat_service.py`, `session_service.py`, `message_persistence_service.py` 신규
-  - 라우터는 `service.run(...) + return ChatResponse(**result)` 패턴 + `_header_uuid` 보조함수 1개만
+  - `backend/app/services/chat_service.py` 신규 (단일 class)
+  - `backend/app/api/_chat_input.py` 신규 (HTTP-input parsing)
+  - `backend/app/services/chat_service.py::UnknownDomainError` — domain error, 라우터에서 HTTPException(404) translation (TodoService `NotFoundError` 동형)
+  - 라우터는 `parse_input → user 조회 → ChatService.run_* → db.commit() → ChatResponse 반환`만 남음
 - **Acceptance**:
-  - (a) `grep "^def _\|^async def _" backend/app/api/chat.py` → 1건 (`_header_uuid`만)
+  - (a) `grep -cE "^(async )?def _" backend/app/api/chat.py` → 0건 (모든 헬퍼 이동)
   - (b) `tests/test_chat_api.py` 그린 유지
   - (c) **신규 contract assertion test** — `backend/tests/test_chat_api.py`에 `test_chat_response_contract` 함수 추가 (Phase 1 시작 전 commit):
     - **기준선 검증 (plan-write 시점)**: `backend/app/api/schemas/chat.py:18-20` 에서 `ChatResponse = {assistant_message: str, tool_calls: list[ToolCallOut]}` 정확 2필드. `ToolCallOut = {name: str, result: dict[str, Any]}` 정확 2필드. 추가 필드 없음 확인됨.
@@ -70,8 +74,8 @@
     - **Rationale for exact equality** (not subset): 1인 프로젝트 + `ChatResponse`가 `frontend/src/lib/api.ts`와 1:1 contract. 필드 추가도 frontend 영향이 있는 변경 → 의식적 검토 강제가 옳음 (drift detection).
   - (d) **외부 의존성 추가 없음**: `pyproject.toml` dev deps 무변동. 기존 `resp.json()` + key assertion 패턴 (`test_chat_api.py:33-36`) 재사용. `syrupy` 등 snapshot 라이브러리 도입 금지.
   - (e) frontend `api.ts` working-tree 변경은 Phase 1과 독립 — 별도 commit으로 분리 처리 (Phase 1 PR에 포함 금지).
-- **Non-goal (Phase 1 scope 외)**: `SessionService`는 Phase 1에서 **chat 라우터만 소비**. `events.py`/`oauth.py`의 사용은 Phase 1 scope 외 — 추후 별도 ralplan에서 결정.
-- **Spec 진입 명령**: `/oh-my-claudecode:ralplan "chat.py 다층 서비스 분리: ChatService + SessionService + MessagePersistenceService"`
+- **Non-goal (Phase 1 scope 외)**: `ChatService`는 chat 라우터만 소비. `events.py`/`oauth.py`의 service 추출은 별도 ralplan. session/persistence 로직을 다른 도메인에서 재사용할 필요가 실측 발생할 때만 별도 ralplan으로 분리 검토 (지금은 single consumer — YAGNI).
+- **Spec 진입 명령** (실행 완료): `/oh-my-claudecode:ralplan "chat.py 다층 서비스 분리: ChatService + SessionService + MessagePersistenceService"` → Phase 1 ralplan 결과 단일 ChatService로 수정됨. Spec: `docs/superpowers/specs/2026-05-17-chat-service-extraction-design.md`.
 
 ### Phase 4 — React Tailwind 토큰 이식 + 도메인 챗 border 포팅
 
@@ -190,7 +194,7 @@ Phase 3 (mockup + 신규 컴포넌트 full 시각 회귀 검증)
 
 | # | Risk | Mitigation |
 |---|---|---|
-| 1 | Phase 1 ralplan이 다층 분리로 큰 PR 생성 | sub-phase 1a(SessionService)/1b(MessagePersistenceService)/1c(ChatService) 으로 더 쪼개야 할 수 있음 — Phase 1 ralplan에서 결정 |
+| 1 | ~~Phase 1 ralplan이 다층 분리로 큰 PR 생성~~ — **해당 없음** | Phase 1 ralplan에서 단일 ChatService (MA-3)로 결정. ~250 LOC churn으로 단일 atomic PR (commit 60f6733). sub-phase 1a/1b/1c 불필요. |
 | 2 | Phase 5 양방향 sync conflict가 todo 라우터 contract 침범 | conflict 발생 시 새 에러 상태 필요. v3.2 acceptance "contract 무변동"이 silent conflict swallowing 강제 risk → Phase 5 ralplan에서 conflict 결과 표현 방식 명시 |
 | 3 | Mid-gate failure → Phase 5 진입 결정 모호 | fail 시 Phase 4 fix 후 mid-gate 재실행. 본 로드맵은 abort/escalate 정책 정의 안 함 — 1인 사용자 판단 (accepted, no mitigation) |
 | 4 | Phase 2 5항목 폭발 | 명시 deferred + 항목별 spec 강제 (재진입 시 본 로드맵 재확인) |
@@ -221,6 +225,20 @@ Phase 3 (mockup + 신규 컴포넌트 full 시각 회귀 검증)
 - 패턴 일관성 (events ↔ tasks 동형)
 
 **Consequence**: 본 결정은 Phase 5 ralplan 진입 시 재논의 금지. Phase 5 entry gate(Task migration spec)는 이 결정을 그대로 적용.
+
+### MA-3: Single-service flat pattern for chat domain
+
+**Decision**: chat 도메인의 backend service는 **단일 ChatService** flat class. 메타 로드맵 v3.2 원안의 "ChatService + SessionService + MessagePersistenceService" 3-service 분리는 폐기.
+
+**Rationale**:
+- TodoService(`backend/app/services/todo.py:14-17`) canonical pattern과 정확 일치 — 단일 class, `__init__(session, user)`, internal section 조직
+- 3-service split은 **single consumer**(chat 라우터 하나) 대상의 abstraction → CLAUDE.md §2 ("No abstractions for single-use code") 위반
+- session/persistence 로직을 다른 도메인이 재사용할 필요는 실측 없음 — speculative future-proofing 회피
+- Phase 1 ralplan Architect steelman + Critic APPROVE (iteration 1)
+
+**Consequence**: 향후 외부 통합 service (Phase 5 Todoist 등)도 동일 flat 패턴으로 진입. 만약 session/persistence를 정말 다른 도메인에서 재사용해야 한다면 그 시점에 별도 ralplan으로 분리 검토 (지금 분리는 금지).
+
+**Precedent commit**: `60f6733 refactor(chat): extract ChatService + slim router (Phase 1)`
 
 ---
 
