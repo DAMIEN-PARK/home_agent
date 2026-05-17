@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from sqlalchemy import DateTime, ForeignKey, Index, String, Text
+from sqlalchemy import DateTime, ForeignKey, Index, String, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -45,6 +45,8 @@ class Task(Base, TimestampMixin):
     __table_args__ = (
         Index("ix_todo_tasks_user_status", "user_id", "status"),
         Index("ix_todo_tasks_due", "due_at"),
+        Index("ix_todo_tasks_sync_state", "sync_state"),
+        UniqueConstraint("source", "external_id", name="uq_tasks_source_external"),
         {"schema": "todo"},
     )
 
@@ -71,5 +73,12 @@ class Task(Base, TimestampMixin):
     priority: Mapped[int] = mapped_column(nullable=False, default=3)  # 1 highest .. 5 lowest
     due_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    # External backend sync (Phase 5: Todoist; mirrors schedule.events pattern)
+    source: Mapped[str] = mapped_column(String(16), nullable=False, default="local")
+    external_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    synced_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    sync_state: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    retry_count: Mapped[int] = mapped_column(nullable=False, default=0)
 
     project: Mapped[Project | None] = relationship(back_populates="tasks")

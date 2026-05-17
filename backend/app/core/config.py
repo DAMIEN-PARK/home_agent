@@ -53,6 +53,10 @@ class Settings(BaseSettings):
     google_oauth_redirect_uri: str = "http://localhost:8000/oauth/google/callback"
     google_calendar_id: str = "primary"
 
+    todoist_client_id: str | None = None
+    todoist_client_secret: str | None = None
+    todoist_redirect_uri: str = "http://localhost:8000/oauth/todoist/callback"
+
 
 @lru_cache
 def get_settings() -> Settings:

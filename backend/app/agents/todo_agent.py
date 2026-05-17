@@ -8,6 +8,12 @@ from app.agents.base import call_llm
 from app.core.config import get_settings
 from app.db.models import Attachment, User
 from app.services.todo import NotFoundError, TodoService
+from app.services.todoist import TodoistAuthError, TodoistClient
+from app.services.todoist_sync import (
+    push_close_local_task,
+    push_local_task,
+    sync_user_todoist,
+)
 
 
 TODO_TOOLS: list[dict[str, Any]] = [
@@ -56,6 +62,11 @@ TODO_TOOLS: list[dict[str, Any]] = [
             },
         },
     },
+    {
+        "name": "todo.sync_todoist",
+        "description": "Pull tasks from Todoist + push pending local tasks. Returns sync counts.",
+        "input_schema": {"type": "object", "properties": {}},
+    },
 ]
 
 
@@ -78,7 +89,15 @@ def _serialize_task(t) -> dict[str, Any]:
         "priority": t.priority,
         "due_at": t.due_at.isoformat() if t.due_at else None,
         "completed_at": t.completed_at.isoformat() if t.completed_at else None,
+        # Phase 5: surface sync state so user sees pending/failed pushes
+        "source": getattr(t, "source", "local"),
+        "sync_state": getattr(t, "sync_state", None),
     }
+
+
+def _todoist_token(user: User) -> str | None:
+    tokens = (user.external_tokens or {}).get("todoist") or {}
+    return tokens.get("access_token")
 
 
 class TodoAgent:
@@ -107,9 +126,14 @@ class TodoAgent:
                     priority=params.get("priority", 3),
                     due_at=_parse_iso(params["due_at"]) if params.get("due_at") else None,
                 )
-                return {"ok": True, "task": _serialize_task(task)}
             except (KeyError, ValueError) as exc:
                 return {"ok": False, "error": f"invalid params: {exc}"}
+            # Phase 5 write-through: push to Todoist if user has token (best-effort).
+            token = _todoist_token(user)
+            if token:
+                async with TodoistClient(token) as client:
+                    await push_local_task(session, client, task=task)
+            return {"ok": True, "task": _serialize_task(task)}
 
         if intent == "list_tasks":
             try:
@@ -120,23 +144,63 @@ class TodoAgent:
 
         if intent == "complete_task":
             try:
-                task = await svc.complete_task(UUID(params["task_id"]))
-                return {"ok": True, "task": _serialize_task(task)}
+                task = await svc.get_task(UUID(params["task_id"]))
             except (KeyError, ValueError) as exc:
                 return {"ok": False, "error": f"invalid params: {exc}"}
             except NotFoundError as exc:
                 return {"ok": False, "error": str(exc)}
+            # Phase 5: push close to Todoist for source='todoist' tasks
+            token = _todoist_token(user)
+            if task.source == "todoist" and token:
+                async with TodoistClient(token) as client:
+                    ok = await push_close_local_task(client, task=task)
+                if not ok:
+                    task.sync_state = "pending"
+                    task.retry_count = (task.retry_count or 0) + 1
+            updated = await svc.complete_task(task.id)
+            return {"ok": True, "task": _serialize_task(updated)}
 
         if intent == "set_priority":
             try:
-                task = await svc.update_task(
-                    UUID(params["task_id"]), priority=int(params["priority"])
-                )
-                return {"ok": True, "task": _serialize_task(task)}
+                task = await svc.get_task(UUID(params["task_id"]))
+                new_priority = int(params["priority"])
             except (KeyError, ValueError) as exc:
                 return {"ok": False, "error": f"invalid params: {exc}"}
             except NotFoundError as exc:
                 return {"ok": False, "error": str(exc)}
+            token = _todoist_token(user)
+            if task.source == "todoist" and task.external_id and token:
+                from app.services.todoist import map_priority_local_to_todoist
+                async with TodoistClient(token) as client:
+                    try:
+                        await client.update_task(
+                            task.external_id,
+                            priority=map_priority_local_to_todoist(new_priority),
+                        )
+                    except Exception:
+                        task.sync_state = "pending"
+                        task.retry_count = (task.retry_count or 0) + 1
+            updated = await svc.update_task(task.id, priority=new_priority)
+            return {"ok": True, "task": _serialize_task(updated)}
+
+        if intent == "sync_todoist":
+            token = _todoist_token(user)
+            if not token:
+                return {
+                    "ok": False,
+                    "error": "Todoist 재인증 필요. /oauth/todoist/start 를 새 창에서 열어주세요.",
+                }
+            try:
+                async with TodoistClient(token) as client:
+                    result = await sync_user_todoist(session, user=user, client=client)
+            except TodoistAuthError:
+                user.external_tokens["todoist"] = None
+                await session.commit()
+                return {
+                    "ok": False,
+                    "error": "Todoist 토큰이 만료/취소되었습니다. /oauth/todoist/start 에서 재인증하세요.",
+                }
+            return {"ok": True, "result": result}
 
         return {"ok": False, "error": f"unknown intent: {intent}"}
 
