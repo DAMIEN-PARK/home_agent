@@ -2,8 +2,71 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>home·agent — 챗</title>
 <link rel="stylesheet" href="_shared/style.css">
+<style>
+  /* Pretext 전용 추가 스타일 (공통 토큰/레이아웃/카드는 _shared/style.css) */
+  .msg .stack { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .msg.user .stack { align-items: flex-end; }
+
+  /* Pretext-shrinkwrapped bubble */
+  .bubble {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 9px 13px;
+    font-size: 14px; line-height: 1.55;
+    box-shadow: var(--shadow-sm); cursor: text;
+    max-width: 88%; box-sizing: border-box;
+    white-space: pre-wrap; word-break: keep-all; overflow-wrap: break-word;
+  }
+  .bubble:focus { outline: none; box-shadow: 0 0 0 2px var(--accent), var(--shadow-sm); }
+  .msg.user .bubble { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .msg.assistant .bubble { background: var(--surface); }
+
+  /* Tool 메시지: 전폭 dashed 블록 + Pretext height reflow */
+  .msg.tool { width: 100%; }
+  .msg.tool .stack { width: 100%; }
+  .tool-body {
+    width: 100%; background: var(--surface-2);
+    border: 1px dashed var(--border-strong); border-radius: var(--radius-sm);
+    padding: 8px 12px; font-family: var(--mono); font-size: 12px;
+    line-height: 1.45; color: var(--text-muted);
+    white-space: pre-wrap; word-break: break-all; cursor: text;
+  }
+  .tool-body:focus { outline: none; box-shadow: 0 0 0 2px var(--accent); }
+
+  /* Rich 블록 (assistant 응답의 리스트 + 액션) */
+  .rich {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 14px; box-shadow: var(--shadow-sm);
+    max-width: 88%; font-size: 14px; line-height: 1.55;
+  }
+  .rich ul { margin: 6px 0 8px; padding-left: 20px; }
+  .rich .rich-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+
+  /* Pretext HUD (개발용 metrics) */
+  .hud {
+    position: fixed; bottom: 12px; right: 12px;
+    background: rgba(15,23,42,0.92); color: #fff;
+    font-family: var(--mono); font-size: 11px;
+    padding: 6px 10px; border-radius: 6px;
+    pointer-events: none; opacity: 0;
+    transition: opacity 120ms; z-index: 9999;
+  }
+  .hud.on { opacity: 1; }
+  .hud .lbl { color: #94a3b8; }
+  .hud .v { color: #4ade80; margin-left: 6px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  /* 중간 폭(1024 이하)에서 chat-side 숨김 — 820px 모바일 breakpoint(_shared)보다 먼저 발동 */
+  @media (max-width: 1024px) {
+    .chat-wrap { grid-template-columns: 1fr; }
+    .chat-side { display: none; }
+  }
+</style>
 </head>
 <body>
 <div class="app">
@@ -32,11 +95,12 @@
     <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
   </aside>
   <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+
   <main class="main">
     <div class="page-header">
       <div>
         <h1>오케스트레이터 챗</h1>
-        <div class="sub">자연어로 묻고, 적절한 서브에이전트가 호출되는 메인 인터페이스</div>
+        <div class="sub">자연어로 묻고, 적절한 서브에이전트가 호출되는 메인 인터페이스 · Pretext-native 텍스트 레이아웃</div>
       </div>
       <div class="actions">
         <button class="btn ghost">↻ 새 대화</button>
@@ -46,74 +110,83 @@
 
     <div class="chat-wrap">
       <div class="chat-main">
-        <div class="chat-thread">
-
+        <div class="chat-thread" id="thread">
           <div class="msg user">
             <div class="who">YOU · 09:14</div>
-            <div class="body">
-              <p>다음주 화요일 오후에 미팅 2시간 잡을 수 있는 시간 찾아주고, 동시에 5월 식비 얼마 썼는지도 알려줘.</p>
+            <div class="stack">
+              <div class="bubble" contenteditable="true" data-pretext data-kind="bubble">다음주 화요일 오후에 미팅 2시간 잡을 수 있는 시간 찾아주고, 동시에 5월 식비 얼마 썼는지도 알려줘.</div>
             </div>
           </div>
 
           <div class="msg tool">
             <div class="who">PLAN</div>
-            <div class="body">orchestrator → split into 2 subtasks: [schedule_agent.find_slot, ledger_agent.sum_by_category]</div>
+            <div class="stack">
+              <div class="tool-body" contenteditable="true" data-pretext data-kind="tool">orchestrator → split into 2 subtasks: [schedule_agent.find_slot, ledger_agent.sum_by_category]</div>
+            </div>
           </div>
 
           <div class="msg tool">
             <div class="who">TOOL</div>
-            <div class="body">schedule_agent.find_slot(date="2026-05-19", duration=120, prefer="afternoon") → 14:00-16:00, 16:30-18:30</div>
+            <div class="stack">
+              <div class="tool-body" contenteditable="true" data-pretext data-kind="tool">schedule_agent.find_slot(date="2026-05-19", duration=120, prefer="afternoon") → 14:00-16:00, 16:30-18:30</div>
+            </div>
           </div>
 
           <div class="msg tool">
             <div class="who">TOOL</div>
-            <div class="body">ledger_agent.sum_by_category(month="2026-05", category="식비") → ₩384,200 (목표 ₩400k의 96%)</div>
+            <div class="stack">
+              <div class="tool-body" contenteditable="true" data-pretext data-kind="tool">ledger_agent.sum_by_category(month="2026-05", category="식비") → ₩384,200 (목표 ₩400k의 96%)</div>
+            </div>
           </div>
 
-          <div class="msg">
+          <div class="msg assistant">
             <div class="who">AGENT · 09:14</div>
-            <div class="body">
-              <p>화요일(5/19) 오후엔 두 슬롯이 비어 있어요.</p>
-              <ul>
-                <li><strong>14:00 – 16:00</strong> ← 추천 (점심 이후 충분한 회복 시간)</li>
-                <li>16:30 – 18:30</li>
-              </ul>
-              <p>그리고 5월 식비는 <strong>₩384,200</strong>. 월 예산(₩400k)의 96%로, 이대로면 이번 달 안에 살짝 초과할 가능성 있어요.</p>
-              <div style="display:flex; gap:6px; margin-top:8px">
-                <button class="btn">14:00 슬롯으로 일정 잡기</button>
-                <button class="btn ghost">식비 예산 조정</button>
+            <div class="stack">
+              <div class="bubble" contenteditable="true" data-pretext data-kind="bubble">화요일(5/19) 오후엔 두 슬롯이 비어 있어요.</div>
+              <div class="rich">
+                <ul>
+                  <li><strong>14:00 – 16:00</strong> ← 추천 (점심 이후 충분한 회복 시간)</li>
+                  <li>16:30 – 18:30</li>
+                </ul>
+                <p style="margin:6px 0 0">그리고 5월 식비는 <strong>₩384,200</strong>. 월 예산(₩400k)의 96%로, 이대로면 이번 달 안에 살짝 초과할 가능성 있어요.</p>
+                <div class="rich-actions">
+                  <button class="btn">14:00 슬롯으로 일정 잡기</button>
+                  <button class="btn ghost">식비 예산 조정</button>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="msg user">
             <div class="who">YOU · 09:15</div>
-            <div class="body">
-              <p>14시 슬롯으로 잡고, 제목은 "스택 결정 리뷰", 참석자에 정민 추가해줘.</p>
+            <div class="stack">
+              <div class="bubble" contenteditable="true" data-pretext data-kind="bubble">14시 슬롯으로 잡고, 제목은 "스택 결정 리뷰", 참석자에 정민 추가해줘.</div>
             </div>
           </div>
 
           <div class="msg tool">
             <div class="who">TOOL</div>
-            <div class="body">schedule_agent.create_event(title="스택 결정 리뷰", start="2026-05-19T14:00", duration=120, attendees=["정민"]) → ok (id=ev_8a2c)</div>
-          </div>
-
-          <div class="msg">
-            <div class="who">AGENT · 09:15</div>
-            <div class="body">
-              <p>잡았어요. <span class="tag accent">5/19 화 14:00–16:00</span> 스택 결정 리뷰 · 정민 초대.</p>
+            <div class="stack">
+              <div class="tool-body" contenteditable="true" data-pretext data-kind="tool">schedule_agent.create_event(title="스택 결정 리뷰", start="2026-05-19T14:00", duration=120, attendees=["정민"]) → ok (id=ev_8a2c)</div>
             </div>
           </div>
 
+          <div class="msg assistant">
+            <div class="who">AGENT · 09:15</div>
+            <div class="stack">
+              <div class="bubble" contenteditable="true" data-pretext data-kind="bubble">잡았어요. 5/19 화 14:00–16:00 · 스택 결정 리뷰 · 정민 초대.</div>
+            </div>
+          </div>
         </div>
+
         <div class="chat-input">
-          <textarea placeholder="무엇이든 물어보세요 — 일정, TODO, 가계부, 자산, 아이디어, 파일…"></textarea>
+          <textarea id="composer" placeholder="무엇이든 물어보세요 — 일정, TODO, 가계부, 자산, 아이디어, 파일…"></textarea>
           <button class="btn">+ 첨부</button>
           <button class="btn primary">전송</button>
         </div>
       </div>
 
-      <div class="chat-side">
+      <aside class="chat-side">
         <div class="card">
           <h2>활성 컨텍스트</h2>
           <ul class="list">
@@ -129,7 +202,7 @@
             <li><span class="mono faint">→</span> ledger.sum_by_category <span class="meta">61ms</span></li>
             <li><span class="mono faint">→</span> schedule.create_event <span class="meta">204ms</span></li>
           </ul>
-          <p class="muted" style="margin:8px 0 0; font-size:12px">총 393ms · 토큰 1,284 · <span class="mono">{model}</span></p>
+          <p class="muted" style="margin:8px 0 0; font-size:12px">총 393ms · 토큰 1,284 · <span class="mono">claude-opus-4-7</span></p>
         </div>
         <div class="card">
           <h2>추천 질문</h2>
@@ -139,9 +212,143 @@
             <li>예산 초과 가능 항목 알려줘</li>
           </ul>
         </div>
-      </div>
+      </aside>
     </div>
   </main>
 </div>
+
+<div class="hud" id="hud"><span class="lbl">pretext</span><span class="v" id="hudV">…</span></div>
+
+<script type="module">
+import {
+  prepare,
+  layout,
+  prepareWithSegments,
+  walkLineRanges,
+  layoutNextLine,
+  layoutWithLines,
+  setLocale,
+  clearCache,
+} from './_shared/pretext.js';
+
+setLocale('ko');
+await document.fonts.ready;
+
+const BUBBLE_PX = 13 * 2;
+const BUBBLE_PY = 9 * 2;
+const TOOL_PX = 12 * 2;
+const TOOL_PY = 8 * 2;
+const COMPOSER_PX = 11 * 2;
+const COMPOSER_PY = 9 * 2;
+
+const hud = document.getElementById('hud');
+const hudV = document.getElementById('hudV');
+let hudTimer = null;
+function flashHud(msg) {
+  hudV.textContent = msg;
+  hud.classList.add('on');
+  clearTimeout(hudTimer);
+  hudTimer = setTimeout(() => hud.classList.remove('on'), 900);
+}
+
+function fontShorthand(el) {
+  const cs = getComputedStyle(el);
+  return `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize}/${cs.lineHeight} ${cs.fontFamily}`;
+}
+function lineHeightOf(el) {
+  return parseFloat(getComputedStyle(el).lineHeight) || 22;
+}
+
+// Shrinkwrap: binary-search for the narrowest width that preserves the line count
+// you would get at the container's max bubble width.
+function shrinkwrap(el) {
+  const text = el.textContent;
+  if (!text.trim()) return;
+  const font = fontShorthand(el);
+  const lh = lineHeightOf(el);
+
+  const containerW = el.parentElement.clientWidth;
+  const maxBubbleTextW = Math.max(120, containerW * 0.88 - BUBBLE_PX);
+
+  const handle = prepare(text, font);
+  const baseline = layout(handle, maxBubbleTextW, lh);
+  const targetLines = baseline.lineCount;
+
+  let lo = 24, hi = maxBubbleTextW;
+  for (let i = 0; i < 14 && hi - lo > 2; i++) {
+    const mid = (lo + hi) / 2;
+    const { lineCount } = layout(handle, mid, lh);
+    if (lineCount <= targetLines) hi = mid;
+    else lo = mid;
+  }
+  const finalTextW = Math.ceil(hi);
+  const finalH = layout(handle, finalTextW, lh).height;
+  el.style.width = `${finalTextW + BUBBLE_PX}px`;
+  el.style.minHeight = `${Math.ceil(finalH) + BUBBLE_PY}px`;
+}
+
+function reflowTool(el) {
+  const text = el.textContent;
+  if (!text.trim()) { el.style.minHeight = ''; return; }
+  const font = fontShorthand(el);
+  const lh = lineHeightOf(el);
+  const textW = el.clientWidth - TOOL_PX;
+  if (textW <= 0) return;
+  const handle = prepare(text, font);
+  const { height } = layout(handle, textW, lh);
+  el.style.minHeight = `${Math.ceil(height) + TOOL_PY}px`;
+}
+
+const composer = document.getElementById('composer');
+function reflowComposer() {
+  const text = composer.value || ' ';
+  const font = fontShorthand(composer);
+  const lh = lineHeightOf(composer);
+  const textW = composer.clientWidth - COMPOSER_PX;
+  if (textW <= 0) return;
+  const handle = prepare(text, font);
+  const { height } = layout(handle, textW, lh);
+  composer.style.height = `${Math.max(40, Math.ceil(height) + COMPOSER_PY)}px`;
+}
+
+function applyAll() {
+  const t0 = performance.now();
+  let bubbles = 0, tools = 0;
+  for (const el of document.querySelectorAll('[data-pretext][data-kind="bubble"]')) {
+    shrinkwrap(el); bubbles++;
+  }
+  for (const el of document.querySelectorAll('[data-pretext][data-kind="tool"]')) {
+    reflowTool(el); tools++;
+  }
+  reflowComposer();
+  const dt = (performance.now() - t0).toFixed(1);
+  flashHud(`${bubbles}b + ${tools}t · ${dt}ms`);
+}
+
+applyAll();
+
+const thread = document.getElementById('thread');
+let rafId = 0;
+new ResizeObserver(() => {
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(applyAll);
+}).observe(thread);
+
+for (const el of document.querySelectorAll('[data-pretext]')) {
+  new MutationObserver(() => {
+    if (el.dataset.kind === 'bubble') shrinkwrap(el);
+    else reflowTool(el);
+    flashHud(`edit · ${el.dataset.kind} reflow`);
+  }).observe(el, { characterData: true, subtree: true, childList: true });
+}
+
+composer.addEventListener('input', reflowComposer);
+window.addEventListener('resize', () => {
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(applyAll);
+});
+
+thread.scrollTop = thread.scrollHeight;
+</script>
 </body>
 </html>
