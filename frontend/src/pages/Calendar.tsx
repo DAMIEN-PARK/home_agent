@@ -35,7 +35,7 @@ export default function Calendar() {
 
   return (
     <div className="p-6">
-      <h1 className="text-xl mb-4">
+      <h1 className="text-xl mb-4 text-domain-schedule">
         {now.getFullYear()}년 {now.getMonth() + 1}월
       </h1>
       {isLoading && <div>로딩…</div>}
@@ -57,7 +57,7 @@ export default function Calendar() {
               {events.map((e) => (
                 <div
                   key={e.id}
-                  className={`mt-1 px-1 truncate border-l-2 ${e.source === "google" ? "border-emerald-500" : "border-indigo-500"}`}
+                  className={`mt-1 px-1 truncate border-l-2 ${e.source === "google" ? "border-emerald-500" : "border-domain-schedule"}`}
                 >
                   {e.title}
                 </div>
