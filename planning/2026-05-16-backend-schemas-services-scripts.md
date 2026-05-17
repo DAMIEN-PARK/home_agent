@@ -1,9 +1,24 @@
 # Backend Schemas → Service Slim → Scripts (Phase 1-2-3)
 
-**Status:** pending approval (ralplan)
+**Status:** Phase 1 + 2a + 3 shipped (2026-05-17). Phase 2b **deferred** — see addendum below.
 **Date:** 2026-05-16
 **Owner:** damien
 **Scope:** `backend/`
+
+## 2026-05-17 Addendum — Phase 2b deferral
+
+`backend/app/agents/orchestrator.py`의 미커밋 변경은 commit `f4aa311` (feat(agents): orchestrator ↔ domain sub-agent model + file attachments)으로 머지되어 원래 hard precondition은 해소됨.
+
+그러나 같은 커밋이 `backend/app/api/chat.py`를 18줄 단일 엔드포인트에서 **277줄·2 엔드포인트(POST /chat + POST /chat/{domain})·헬퍼 6개**로 확장. plan 원안의 "라우터 본문은 `service.run(...)` + `return ChatResponse(**result)` 만 남김" 모양이 더 이상 핏하지 않음 — 현재 chat.py에는 `_parse_input` (multipart/form 처리), `_get_or_create_scoped_session` (device/scope별 세션 관리), `_save_attachments` (파일 첨부 영속화), `_persist_turn` (user/assistant/tool 메시지 기록), `_load_recent_messages` (도메인 채팅용 컨텍스트 로딩) 등 5개의 HTTP-인접 영속 헬퍼가 혼재.
+
+올바른 Phase 2b는 단일 `ChatService` 추출이 아니라 다음의 다층 분리:
+- `ChatService` (orchestrator + domain agent 디스패치)
+- `SessionService` (device/scope별 세션 lookup/create)
+- `MessagePersistenceService` (turn 기록 + 첨부)
+
+이는 원안 ralplan의 acceptance criterion ("라우터엔 `service.run(...)` 호출과 `ChatResponse(**result)` 반환만 남음")을 그대로 적용할 수 없으므로 **별도 ralplan 라운드에서 재설계** 필요. Phase 2b는 그 시점까지 deferred.
+
+---
 
 ## Context
 
