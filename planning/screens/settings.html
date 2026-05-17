@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>home·agent — 설정</title>
+<link rel="stylesheet" href="_shared/style.css">
+<style>
+  /* settings-only: 짧은 보조 스타일 */
+  .settings-nav {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .settings-nav a {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+  }
+  .settings-nav a:hover { background: var(--surface-2); text-decoration: none; }
+  .settings-nav a.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-soft); }
+
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+  }
+  .toggle.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-soft); }
+  .toggle.on::before { content: "●"; color: var(--accent); }
+  .toggle.off { color: var(--text-faint); }
+  .toggle.off::before { content: "○"; color: var(--text-faint); }
+
+  .section-anchor { scroll-margin-top: 20px; }
+
+  .vision-tree { list-style: none; padding: 0; margin: 0; }
+  .vision-tree li { padding: 6px 0; border-bottom: 1px dashed var(--border); font-size: 13px; }
+  .vision-tree li:last-child { border-bottom: none; }
+  .vision-tree .child { padding-left: 22px; font-size: 12.5px; color: var(--text-muted); }
+  .vision-tree .progress-bar {
+    display: inline-block;
+    width: 100px;
+    height: 6px;
+    background: var(--surface-2);
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+    overflow: hidden;
+  }
+  .vision-tree .progress-bar > span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">home<span class="dot">·</span>agent</div>
+    <nav class="nav">
+      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
+      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
+      <div class="group-label">도메인</div>
+      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
+      <a href="todo.html"><span class="ic">☑</span> TODO</a>
+      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
+      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
+      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
+      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
+      <div class="group-label">시스템</div>
+      <a href="settings.html" class="active"><span class="ic">⚙</span> 설정</a>
+      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+    </nav>
+    <div class="footer">v0.0.1 · planning mockup</div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>설정</h1>
+        <div class="sub">디바이스 · 외부 연동 · MCP · 모델 라우팅 · 카테고리/예산 · 비전 · 백업</div>
+      </div>
+      <div class="actions">
+        <button class="btn ghost">변경 취소</button>
+        <button class="btn primary">변경 사항 저장</button>
+      </div>
+    </div>
+
+    <nav class="settings-nav">
+      <a href="#devices" class="active">디바이스</a>
+      <a href="#integrations">외부 연동</a>
+      <a href="#mcp">MCP 서버</a>
+      <a href="#routing">모델 라우팅</a>
+      <a href="#ledger-budget">카테고리·예산</a>
+      <a href="#vision">비전·목표</a>
+      <a href="#backup">백업</a>
+    </nav>
+
+    <!-- 1. 디바이스 -->
+    <section id="devices" class="card section-anchor">
+      <h2>디바이스</h2>
+      <p class="muted" style="margin:0 0 12px; font-size:12.5px">
+        같은 LAN에서 접속한 기기 목록. 디바이스별로 채팅이 분리되어 저장됩니다. (이름은 사용자가 입력, ID는 localStorage UUID)
+      </p>
+      <table class="tbl">
+        <thead><tr><th>이름</th><th>device_id</th><th>마지막 접속</th><th>채팅</th><th class="num">액션</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>데스크탑</strong> <span class="tag accent">현재</span></td>
+            <td class="mono faint">a3f2-…-c19e</td>
+            <td class="mono">2026-05-16 09:21</td>
+            <td>14</td>
+            <td class="num"><a href="#">이름 변경</a></td>
+          </tr>
+          <tr>
+            <td>노트북-거실</td>
+            <td class="mono faint">7b41-…-2d08</td>
+            <td class="mono">2026-05-15 22:40</td>
+            <td>6</td>
+            <td class="num"><a href="#">이름 변경</a> · <a href="#">제거</a></td>
+          </tr>
+          <tr>
+            <td>노트북-출장</td>
+            <td class="mono faint">f902-…-9a3b</td>
+            <td class="mono">2026-05-12 14:08</td>
+            <td>3</td>
+            <td class="num"><a href="#">이름 변경</a> · <a href="#">제거</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin:10px 0 0; font-size:12px">
+        제거하면 그 디바이스의 localStorage 식별자만 무효화됩니다. 채팅 기록은 보존(읽기 전용).
+      </p>
+    </section>
+
+    <hr>
+
+    <!-- 2. 외부 연동 -->
+    <section id="integrations" class="card section-anchor">
+      <h2>외부 연동 (OAuth)</h2>
+      <div class="grid cols-2">
+        <div>
+          <div style="display:flex; align-items:center; justify-content:space-between">
+            <div>
+              <h3 style="margin:0">Google Calendar</h3>
+              <p class="muted" style="margin:4px 0 0; font-size:12px">15분 주기 양방향 동기화 · 일정 도메인</p>
+            </div>
+            <span class="tag success">connected</span>
+          </div>
+          <ul class="list" style="margin-top:10px">
+            <li>계정 <span class="meta">damien@bctone.kr</span></li>
+            <li>마지막 동기화 <span class="meta">방금 전 · 14건</span></li>
+            <li>토큰 만료 <span class="meta">2026-08-12</span></li>
+          </ul>
+          <div style="display:flex; gap:6px; margin-top:10px">
+            <button class="btn">지금 동기화</button>
+            <button class="btn ghost">재인증</button>
+            <button class="btn ghost" style="color:var(--danger)">연결 해제</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex; align-items:center; justify-content:space-between">
+            <div>
+              <h3 style="margin:0">Todoist</h3>
+              <p class="muted" style="margin:4px 0 0; font-size:12px">업무 TODO 외부 백엔드 · TODO 도메인</p>
+            </div>
+            <span class="tag warn">setup needed</span>
+          </div>
+          <ul class="list" style="margin-top:10px">
+            <li>계정 <span class="meta">—</span></li>
+            <li>동기화 주기 <span class="meta">15분 (예정)</span></li>
+            <li>스코프 <span class="meta">data:read_write</span></li>
+          </ul>
+          <div style="display:flex; gap:6px; margin-top:10px">
+            <button class="btn primary">Todoist 연결</button>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <p class="muted" style="margin:0; font-size:12px">
+        Anthropic API는 OAuth가 아닌 키. <code class="mono">.env</code>의 <code class="mono">ANTHROPIC_API_KEY</code>로 관리하며 이 화면엔 노출하지 않음.
+      </p>
+    </section>
+
+    <hr>
+
+    <!-- 3. MCP 서버 -->
+    <section id="mcp" class="card section-anchor">
+      <h2>MCP 서버</h2>
+      <p class="muted" style="margin:0 0 12px; font-size:12.5px">
+        도메인 서브에이전트가 호출 가능한 MCP 서버 목록. 끄면 해당 도메인 챗에서 도구를 못 씀.
+      </p>
+      <table class="tbl">
+        <thead><tr><th>서버</th><th>도메인</th><th>엔드포인트</th><th>상태</th><th class="num">사용</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>schedule-mcp</strong></td>
+            <td><span class="tag accent">schedule</span></td>
+            <td class="mono faint">stdio · ./mcp/schedule</td>
+            <td><button class="toggle on">on</button></td>
+            <td class="num"><a href="#">설정</a></td>
+          </tr>
+          <tr>
+            <td><strong>todo-mcp</strong></td>
+            <td><span class="tag accent">todo</span></td>
+            <td class="mono faint">stdio · ./mcp/todo</td>
+            <td><button class="toggle on">on</button></td>
+            <td class="num"><a href="#">설정</a></td>
+          </tr>
+          <tr>
+            <td><strong>ledger-mcp</strong></td>
+            <td><span class="tag accent">ledger</span></td>
+            <td class="mono faint">stdio · ./mcp/ledger</td>
+            <td><button class="toggle on">on</button></td>
+            <td class="num"><a href="#">설정</a></td>
+          </tr>
+          <tr>
+            <td><strong>finance-mcp</strong></td>
+            <td><span class="tag accent">finance</span></td>
+            <td class="mono faint">stdio · ./mcp/finance</td>
+            <td><button class="toggle on">on</button></td>
+            <td class="num"><a href="#">설정</a></td>
+          </tr>
+          <tr>
+            <td><strong>ideas-mcp</strong></td>
+            <td><span class="tag accent">ideas</span></td>
+            <td class="mono faint">stdio · ./mcp/ideas</td>
+            <td><button class="toggle on">on</button></td>
+            <td class="num"><a href="#">설정</a></td>
+          </tr>
+          <tr>
+            <td><strong>files-mcp</strong></td>
+            <td><span class="tag accent">files</span></td>
+            <td class="mono faint">stdio · ./mcp/files</td>
+            <td><button class="toggle on">on</button></td>
+            <td class="num"><a href="#">설정</a></td>
+          </tr>
+          <tr>
+            <td><strong>todoist-bridge</strong></td>
+            <td><span class="tag">todo · external</span></td>
+            <td class="mono faint">http · 127.0.0.1:8810</td>
+            <td><button class="toggle off">off</button></td>
+            <td class="num"><a href="#">설정</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px">
+        <button class="btn">+ MCP 서버 추가</button>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- 4. 모델 라우팅 -->
+    <section id="routing" class="card section-anchor">
+      <h2>모델 라우팅</h2>
+      <p class="muted" style="margin:0 0 12px; font-size:12.5px">
+        오케스트레이터와 각 도메인 서브에이전트가 사용할 기본 모델. 사용량 많은 도메인은 Haiku로 비용 절감, 추론 중요한 도메인은 Opus.
+      </p>
+      <table class="tbl">
+        <thead><tr><th>주체</th><th>역할</th><th>모델</th><th class="num">월 토큰(추정)</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>orchestrator</strong></td>
+            <td>의도 분류 · 도메인 디스패치 · 응답 합치기</td>
+            <td>
+              <select class="btn" style="font-family:var(--mono); font-size:12px">
+                <option>claude-opus-4-7</option>
+                <option selected>claude-sonnet-4-6</option>
+                <option>claude-haiku-4-5</option>
+              </select>
+            </td>
+            <td class="num mono">~420k</td>
+          </tr>
+          <tr>
+            <td><strong>schedule_agent</strong></td>
+            <td>일정 조회/생성 · 슬롯 찾기</td>
+            <td>
+              <select class="btn" style="font-family:var(--mono); font-size:12px">
+                <option>claude-opus-4-7</option>
+                <option>claude-sonnet-4-6</option>
+                <option selected>claude-haiku-4-5</option>
+              </select>
+            </td>
+            <td class="num mono">~180k</td>
+          </tr>
+          <tr>
+            <td><strong>todo_agent</strong></td>
+            <td>작업 정렬 · 우선순위 추론</td>
+            <td>
+              <select class="btn" style="font-family:var(--mono); font-size:12px">
+                <option>claude-opus-4-7</option>
+                <option selected>claude-sonnet-4-6</option>
+                <option>claude-haiku-4-5</option>
+              </select>
+            </td>
+            <td class="num mono">~150k</td>
+          </tr>
+          <tr>
+            <td><strong>ledger_agent</strong></td>
+            <td>카테고리 추론 · 거래 합산</td>
+            <td>
+              <select class="btn" style="font-family:var(--mono); font-size:12px">
+                <option>claude-opus-4-7</option>
+                <option>claude-sonnet-4-6</option>
+                <option selected>claude-haiku-4-5</option>
+              </select>
+            </td>
+            <td class="num mono">~95k</td>
+          </tr>
+          <tr>
+            <td><strong>finance_agent</strong></td>
+            <td>자산 평가 · 리밸런싱 시뮬</td>
+            <td>
+              <select class="btn" style="font-family:var(--mono); font-size:12px">
+                <option selected>claude-opus-4-7</option>
+                <option>claude-sonnet-4-6</option>
+                <option>claude-haiku-4-5</option>
+              </select>
+            </td>
+            <td class="num mono">~60k</td>
+          </tr>
+          <tr>
+            <td><strong>ideas_agent</strong></td>
+            <td>의미 검색 · 노트 요약/연결</td>
+            <td>
+              <select class="btn" style="font-family:var(--mono); font-size:12px">
+                <option>claude-opus-4-7</option>
+                <option selected>claude-sonnet-4-6</option>
+                <option>claude-haiku-4-5</option>
+              </select>
+            </td>
+            <td class="num mono">~210k</td>
+          </tr>
+          <tr>
+            <td><strong>files_agent</strong></td>
+            <td>자연어 검색 · 자동 태깅 · OCR</td>
+            <td>
+              <select class="btn" style="font-family:var(--mono); font-size:12px">
+                <option>claude-opus-4-7</option>
+                <option selected>claude-sonnet-4-6</option>
+                <option>claude-haiku-4-5</option>
+              </select>
+            </td>
+            <td class="num mono">~310k</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin:10px 0 0; font-size:12px">
+        월 토큰은 최근 30일 사용량 기반 추정. 실제는 <a href="#">사용량 로그</a>에서 확인.
+      </p>
+    </section>
+
+    <hr>
+
+    <!-- 5. 가계부 카테고리·예산 -->
+    <section id="ledger-budget" class="card section-anchor">
+      <h2>가계부 카테고리 · 예산</h2>
+      <p class="muted" style="margin:0 0 12px; font-size:12.5px">
+        ledger 도메인이 거래를 자동 분류할 때 사용하는 카테고리 트리와 월별 예산.
+      </p>
+      <table class="tbl">
+        <thead><tr><th>카테고리</th><th>색</th><th class="num">월 예산</th><th class="num">5월 사용</th><th class="num">%</th><th class="num">액션</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>식비</td>
+            <td><span class="swatch" style="background:#f97316"></span><span class="mono faint">#f97316</span></td>
+            <td class="num">₩400,000</td>
+            <td class="num">384,200</td>
+            <td class="num">96</td>
+            <td class="num"><a href="#">편집</a></td>
+          </tr>
+          <tr>
+            <td>교통</td>
+            <td><span class="swatch" style="background:#3b82f6"></span><span class="mono faint">#3b82f6</span></td>
+            <td class="num">₩120,000</td>
+            <td class="num">68,400</td>
+            <td class="num">57</td>
+            <td class="num"><a href="#">편집</a></td>
+          </tr>
+          <tr>
+            <td>생활</td>
+            <td><span class="swatch" style="background:#10b981"></span><span class="mono faint">#10b981</span></td>
+            <td class="num">₩200,000</td>
+            <td class="num">131,800</td>
+            <td class="num">66</td>
+            <td class="num"><a href="#">편집</a></td>
+          </tr>
+          <tr>
+            <td>문화/여가</td>
+            <td><span class="swatch" style="background:#a855f7"></span><span class="mono faint">#a855f7</span></td>
+            <td class="num">₩150,000</td>
+            <td class="num">42,000</td>
+            <td class="num">28</td>
+            <td class="num"><a href="#">편집</a></td>
+          </tr>
+          <tr>
+            <td>의료</td>
+            <td><span class="swatch" style="background:#ef4444"></span><span class="mono faint">#ef4444</span></td>
+            <td class="num">₩100,000</td>
+            <td class="num">112,400</td>
+            <td class="num">112</td>
+            <td class="num"><a href="#">편집</a></td>
+          </tr>
+          <tr>
+            <td>고정비</td>
+            <td><span class="swatch" style="background:#6b7280"></span><span class="mono faint">#6b7280</span></td>
+            <td class="num">₩450,000</td>
+            <td class="num">442,000</td>
+            <td class="num">98</td>
+            <td class="num"><a href="#">편집</a></td>
+          </tr>
+          <tr>
+            <td>기타</td>
+            <td><span class="swatch" style="background:#a8a29e"></span><span class="mono faint">#a8a29e</span></td>
+            <td class="num">₩100,000</td>
+            <td class="num">103,500</td>
+            <td class="num">104</td>
+            <td class="num"><a href="#">편집</a></td>
+          </tr>
+          <tr style="background:var(--surface-2); font-weight:600">
+            <td>합계</td>
+            <td>—</td>
+            <td class="num">₩1,520,000</td>
+            <td class="num">1,284,300</td>
+            <td class="num">84</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px; display:flex; gap:6px">
+        <button class="btn">+ 카테고리 추가</button>
+        <button class="btn ghost">월별 예산 일괄 편집</button>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- 6. 비전·목표 -->
+    <section id="vision" class="card section-anchor">
+      <h2>비전 · 목표</h2>
+      <p class="muted" style="margin:0 0 12px; font-size:12.5px">
+        장기 비전 → 중기 목표 → 마일스톤. schedule 화면 비전 트리와 같은 데이터를 편집.
+      </p>
+      <ul class="vision-tree">
+        <li>
+          <strong>🌱 home_agent 자체 운용 가능 상태</strong>
+          <span class="tag" style="margin-left:8px">vision</span>
+          <span class="progress-bar"><span style="width:32%"></span></span>
+          <span class="mono faint" style="font-size:11px">32% · target 2026-09</span>
+          <a href="#" style="margin-left:8px; font-size:11px">편집</a>
+        </li>
+        <li class="child">↳ MVP (일정+TODO) · target 2026-08 <span class="tag">goal</span> <a href="#" style="font-size:11px; margin-left:8px">편집</a></li>
+        <li class="child">↳ 가계부·파일 통합 · target 2026-10 <span class="tag">goal</span> <a href="#" style="font-size:11px; margin-left:8px">편집</a></li>
+        <li>
+          <strong>📚 매일 30분 학습 루틴</strong>
+          <span class="tag" style="margin-left:8px">habit</span>
+          <span class="progress-bar"><span style="width:92%"></span></span>
+          <span class="mono faint" style="font-size:11px">5월 92%</span>
+          <a href="#" style="margin-left:8px; font-size:11px">편집</a>
+        </li>
+        <li>
+          <strong>💪 체중 -3kg</strong>
+          <span class="tag" style="margin-left:8px">goal</span>
+          <span class="progress-bar"><span style="width:40%"></span></span>
+          <span class="mono faint" style="font-size:11px">-1.2kg · target 2026-08</span>
+          <a href="#" style="margin-left:8px; font-size:11px">편집</a>
+        </li>
+      </ul>
+      <div style="margin-top:10px; display:flex; gap:6px">
+        <button class="btn">+ 비전 추가</button>
+        <button class="btn ghost">+ 목표 추가</button>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- 7. 백업 -->
+    <section id="backup" class="card section-anchor">
+      <h2>백업</h2>
+      <div class="grid cols-2">
+        <div>
+          <h3 style="margin:0 0 8px">현재 상태</h3>
+          <ul class="list">
+            <li>마지막 백업 <span class="meta">2026-05-16 03:00 · 자동</span></li>
+            <li>백업 크기 <span class="meta">42.6 MB</span></li>
+            <li>대상 <span class="meta">postgres dump + files/</span></li>
+            <li>경로 <span class="meta">/var/backups/home_agent/</span></li>
+          </ul>
+          <div style="display:flex; gap:6px; margin-top:10px">
+            <button class="btn primary">즉시 백업</button>
+            <button class="btn">백업에서 복원</button>
+            <button class="btn ghost">백업 내보내기 (.zip)</button>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 8px">자동 백업 정책</h3>
+          <div class="field">
+            <label>주기</label>
+            <select>
+              <option>매일 03:00 (권장)</option>
+              <option selected>매일 03:00 + 주간 풀백업</option>
+              <option>매주 일요일 03:00</option>
+              <option>수동만</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>보관 기간</label>
+            <select>
+              <option>최근 7일</option>
+              <option selected>최근 30일</option>
+              <option>최근 90일</option>
+              <option>무제한</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>외부 백업 (선택)</label>
+            <select>
+              <option selected>비활성</option>
+              <option>로컬 NAS</option>
+              <option>외장 SSD</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

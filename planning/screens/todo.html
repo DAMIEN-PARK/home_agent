@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="_shared/style.css">
 </head>
 <body>
-<div class="app with-step-rail">
+<div class="app">
   <aside class="sidebar">
     <div class="brand">home<span class="dot">·</span>agent</div>
     <nav class="nav">
@@ -26,96 +26,6 @@
     <div class="footer">v0.0.1 · planning mockup</div>
   </aside>
 
-  <aside class="step-rail">
-    <div class="sr-head">
-      <h2>Order · 순서</h2>
-      <span class="sr-count">14</span>
-    </div>
-    <div class="sr-switch">
-      <button class="active">TODO</button>
-      <button>일정</button>
-    </div>
-
-    <div class="step-card done">
-      <div class="step-no">STEP 1 · done</div>
-      <div class="step-title">레포 스캐폴딩</div>
-      <div class="step-stamp">2026-05-10 14:20</div>
-    </div>
-    <div class="step-card done">
-      <div class="step-no">STEP 2 · done</div>
-      <div class="step-title">Claude Agent SDK 도입 결정</div>
-      <div class="step-stamp">2026-05-10 17:45</div>
-    </div>
-    <div class="step-card done">
-      <div class="step-no">STEP 3 · done</div>
-      <div class="step-title">도메인별 스키마 분리</div>
-      <div class="step-stamp">2026-05-12 11:08</div>
-    </div>
-    <div class="step-card done">
-      <div class="step-no">STEP 4 · done</div>
-      <div class="step-title">pgvector 확장 활성화</div>
-      <div class="step-stamp">2026-05-13 09:30</div>
-    </div>
-    <div class="step-card overdue">
-      <div class="step-no">STEP 5 · overdue</div>
-      <div class="step-title">MVP 범위 확정</div>
-      <div class="step-stamp">2026-05-15 EOD · 1d 지연</div>
-      <div class="step-tags"><span class="tag danger">P0</span><span class="tag">home_agent</span></div>
-    </div>
-    <div class="step-card active">
-      <div class="step-no">STEP 6 · 진행 중</div>
-      <div class="step-title">일정 에이전트 — MCP 서버 스켈레톤</div>
-      <div class="step-stamp">2026-05-16 PM 01:30</div>
-      <div class="step-tags"><span class="tag accent">P1</span><span class="tag warn">D-1</span></div>
-    </div>
-    <div class="step-card">
-      <div class="step-no">STEP 7</div>
-      <div class="step-title">오케스트레이터 라우팅 규칙 작성</div>
-      <div class="step-stamp">2026-05-17 예정</div>
-      <div class="step-tags"><span class="tag">P1</span></div>
-    </div>
-    <div class="step-card warn">
-      <div class="step-no">STEP 8</div>
-      <div class="step-title">STACK.md 결정 항목 클로즈</div>
-      <div class="step-stamp">2026-05-18 · D-2</div>
-      <div class="step-tags"><span class="tag warn">P1</span></div>
-    </div>
-    <div class="step-card">
-      <div class="step-no">STEP 9</div>
-      <div class="step-title">스택 결정 리뷰 (정민)</div>
-      <div class="step-stamp">2026-05-19 14:00</div>
-    </div>
-    <div class="step-card">
-      <div class="step-no">STEP 10</div>
-      <div class="step-title">pgvector 인덱스 벤치</div>
-      <div class="step-stamp">2026-05-20 · D-4</div>
-      <div class="step-tags"><span class="tag">P2</span></div>
-    </div>
-    <div class="step-card">
-      <div class="step-no">STEP 11</div>
-      <div class="step-title">가족 일정 동기화 정책</div>
-      <div class="step-stamp">2026-05-22 예정</div>
-      <div class="step-tags"><span class="tag">P2</span></div>
-    </div>
-    <div class="step-card">
-      <div class="step-no">STEP 12</div>
-      <div class="step-title">가계부 카테고리 트리 정리</div>
-      <div class="step-stamp">2026-05-23 · D-7</div>
-      <div class="step-tags"><span class="tag">P2</span></div>
-    </div>
-    <div class="step-card">
-      <div class="step-no">STEP 13</div>
-      <div class="step-title">병원 검진 결과 정리</div>
-      <div class="step-stamp">미정</div>
-      <div class="step-tags"><span class="tag">P2</span><span class="tag">개인</span></div>
-    </div>
-    <div class="step-card">
-      <div class="step-no">STEP 14</div>
-      <div class="step-title">월말 회고</div>
-      <div class="step-stamp">2026-05-29 16:00</div>
-    </div>
-  </aside>
-
   <main class="main">
     <div class="page-header">
       <div>
@@ -129,41 +39,19 @@
       </div>
     </div>
 
+    <div class="with-rail">
+    <div>
     <div style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap">
-      <span class="tag accent">all 23</span>
-      <span class="tag">home_agent 11</span>
-      <span class="tag">개인 6</span>
-      <span class="tag">집안일 3</span>
-      <span class="tag danger">overdue 3</span>
+      <span class="tag accent">all 12</span>
+      <span class="tag">home_agent 9</span>
+      <span class="tag">개인 2</span>
+      <span class="tag">집안일 1</span>
+      <span class="tag danger">overdue 1</span>
     </div>
 
     <div class="kanban">
       <div class="kcol">
-        <h3>Backlog <span class="faint">9</span></h3>
-        <div class="kcard">
-          <div>모바일 PWA 검토</div>
-          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
-        </div>
-        <div class="kcard">
-          <div>가계부 OCR 영수증 파싱</div>
-          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
-        </div>
-        <div class="kcard">
-          <div>거실 책장 정리</div>
-          <div class="row"><span class="tag">집안일</span><span class="faint mono">P4</span></div>
-        </div>
-        <div class="kcard">
-          <div>Tauri 데스크톱 래핑 PoC</div>
-          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
-        </div>
-      </div>
-
-      <div class="kcol">
-        <h3>This Week <span class="faint">7</span></h3>
-        <div class="kcard">
-          <div><strong>일정 에이전트 — MCP 서버 스켈레톤</strong></div>
-          <div class="row"><span class="tag accent">home_agent</span><span class="tag warn">D-1</span><span class="faint mono">P1</span></div>
-        </div>
+        <h3>Backlog <span class="faint">8</span></h3>
         <div class="kcard">
           <div>STACK.md 결정 항목 클로즈</div>
           <div class="row"><span class="tag accent">home_agent</span><span class="tag warn">D-2</span><span class="faint mono">P1</span></div>
@@ -180,6 +68,22 @@
           <div>병원 검진 결과 정리</div>
           <div class="row"><span class="tag">개인</span><span class="faint mono">P2</span></div>
         </div>
+        <div class="kcard">
+          <div>모바일 PWA 검토</div>
+          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
+        </div>
+        <div class="kcard">
+          <div>가계부 OCR 영수증 파싱</div>
+          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
+        </div>
+        <div class="kcard">
+          <div>Tauri 데스크톱 래핑 PoC</div>
+          <div class="row"><span class="tag">home_agent</span><span class="faint mono">P3</span></div>
+        </div>
+        <div class="kcard">
+          <div>거실 책장 정리</div>
+          <div class="row"><span class="tag">집안일</span><span class="faint mono">P4</span></div>
+        </div>
       </div>
 
       <div class="kcol">
@@ -187,6 +91,10 @@
         <div class="kcard">
           <div><strong>MVP 범위 확정</strong></div>
           <div class="row"><span class="tag accent">home_agent</span><span class="tag danger">today</span><span class="faint mono">P0</span></div>
+        </div>
+        <div class="kcard">
+          <div><strong>일정 에이전트 — MCP 서버 스켈레톤</strong></div>
+          <div class="row"><span class="tag accent">home_agent</span><span class="tag warn">D-1</span><span class="faint mono">P1</span></div>
         </div>
         <div class="kcard">
           <div>오케스트레이터 라우팅 규칙 작성</div>
@@ -197,31 +105,21 @@
           <div class="row"><span class="tag">개인</span><span class="faint mono">P2</span></div>
         </div>
       </div>
-
-      <div class="kcol">
-        <h3>Done · 7일 <span class="faint">12</span></h3>
-        <div class="kcard">
-          <div><s>레포 스캐폴딩 (planning/frontend/backend)</s></div>
-          <div class="row"><span class="tag success">완료</span><span class="faint mono">5/14</span></div>
-        </div>
-        <div class="kcard">
-          <div><s>Postgres + pgvector 확장 활성화</s></div>
-          <div class="row"><span class="tag success">완료</span><span class="faint mono">5/13</span></div>
-        </div>
-        <div class="kcard">
-          <div><s>도메인별 스키마 분리 결정</s></div>
-          <div class="row"><span class="tag success">완료</span><span class="faint mono">5/12</span></div>
-        </div>
-        <div class="kcard">
-          <div><s>Claude Agent SDK 도입 결정</s></div>
-          <div class="row"><span class="tag success">완료</span><span class="faint mono">5/10</span></div>
-        </div>
-      </div>
     </div>
 
     <div class="card" style="margin-top:18px">
       <h2>에이전트 제안</h2>
       <p style="margin:0">P0/P1 작업 4건이 모두 같은 사람(나)에게 몰려 있어요. <a href="#">스택 결정 리뷰(5/19)</a> 이후로 P2를 미루는 방안 추천.</p>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h2>최근 완료 · 7일</h2>
+      <ul class="list">
+        <li><s>레포 스캐폴딩 (planning/frontend/backend)</s> <span class="meta">5/14</span></li>
+        <li><s>Postgres + pgvector 확장 활성화</s> <span class="meta">5/13</span></li>
+        <li><s>도메인별 스키마 분리 결정</s> <span class="meta">5/12</span></li>
+        <li><s>Claude Agent SDK 도입 결정</s> <span class="meta">5/10</span></li>
+      </ul>
     </div>
 
     <div class="domain-chat" style="margin-top:18px">
@@ -265,6 +163,117 @@
         <span class="dc-suggest">프로젝트별 진행률</span>
       </div>
     </div>
+    </div><!-- /left column -->
+
+    <aside class="rail">
+      <div class="rail-head">
+        <h2>Timeline · 통합</h2>
+        <span class="rail-now">2026-05-16 Fri</span>
+      </div>
+      <div class="rail-filter">
+        <button>전체</button>
+        <button>일정</button>
+        <button class="active">할일</button>
+        <button>완료</button>
+      </div>
+      <div class="rail-body">
+        <div class="rail-item past">
+          <span class="stamp">04-30 · 16d ago</span>
+          <span class="label">팀 워크샵 — 회고 노트 저장</span>
+        </div>
+        <div class="rail-item past">
+          <span class="stamp">05-04 · 12d ago</span>
+          <span class="label">스프린트 시작</span>
+        </div>
+        <div class="rail-item past">
+          <span class="stamp">05-07 · 9d ago</span>
+          <span class="label">병원 검진 — 결과 정상</span>
+        </div>
+        <div class="rail-item past">
+          <span class="stamp">05-08 · 8d ago</span>
+          <span class="label">어버이날 — 가족 식사</span>
+        </div>
+        <div class="rail-item past todo done">
+          <span class="stamp">05-10 · 6d ago</span>
+          <span class="label">레포 스캐폴딩</span>
+        </div>
+        <div class="rail-item past todo done">
+          <span class="stamp">05-12 · 4d ago</span>
+          <span class="label">도메인 스키마 분리 결정</span>
+        </div>
+        <div class="rail-item past todo done">
+          <span class="stamp">05-13 · 3d ago</span>
+          <span class="label">pgvector 확장 활성화</span>
+        </div>
+        <div class="rail-item past milestone">
+          <span class="stamp">05-13 · 3d ago</span>
+          <span class="label">스택 결정 마감 ✓</span>
+        </div>
+        <div class="rail-item past">
+          <span class="stamp">05-14 · 2d ago</span>
+          <span class="label">팀 회고</span>
+        </div>
+        <div class="rail-item past todo overdue">
+          <span class="stamp">05-15 EOD · yesterday</span>
+          <span class="label">MVP 범위 확정 <span class="row-tags"><span class="tag danger">P0</span></span></span>
+        </div>
+        <div class="rail-item past">
+          <span class="stamp">05-15 12:00 · yesterday</span>
+          <span class="label">점심 — 정민</span>
+        </div>
+
+        <div class="rail-now-row">
+          <span class="stamp">2026-05-16 · 지금</span>
+          <span class="label">▸ 일정 에이전트 MCP 스켈레톤</span>
+        </div>
+
+        <div class="rail-item future todo">
+          <span class="stamp">05-17 · in 1d</span>
+          <span class="label">오케스트레이터 라우팅 규칙 <span class="row-tags"><span class="tag">P1</span></span></span>
+        </div>
+        <div class="rail-item future todo">
+          <span class="stamp">05-18 · in 2d</span>
+          <span class="label">STACK.md 결정 항목 클로즈 <span class="row-tags"><span class="tag warn">P1</span></span></span>
+        </div>
+        <div class="rail-item future">
+          <span class="stamp">05-19 14:00 · in 3d</span>
+          <span class="label">스택 결정 리뷰 — 정민</span>
+        </div>
+        <div class="rail-item future todo">
+          <span class="stamp">05-20 · in 4d</span>
+          <span class="label">pgvector 인덱스 벤치 <span class="row-tags"><span class="tag">P2</span></span></span>
+        </div>
+        <div class="rail-item future">
+          <span class="stamp">05-23 18:00 · in 7d</span>
+          <span class="label">부모님 식사</span>
+        </div>
+        <div class="rail-item future todo">
+          <span class="stamp">05-23 · in 7d</span>
+          <span class="label">가계부 카테고리 트리 정리 <span class="row-tags"><span class="tag">P2</span></span></span>
+        </div>
+        <div class="rail-item future">
+          <span class="stamp">05-25 · in 9d</span>
+          <span class="label">석가탄신일</span>
+        </div>
+        <div class="rail-item future">
+          <span class="stamp">05-29 16:00 · in 13d</span>
+          <span class="label">월말 회고</span>
+        </div>
+        <div class="rail-item future milestone">
+          <span class="stamp">2026-08 · in ~3mo</span>
+          <span class="label">MVP (일정+TODO) 목표</span>
+        </div>
+        <div class="rail-item future milestone">
+          <span class="stamp">2026-09 · in ~4mo</span>
+          <span class="label">home_agent 자체 운용 가능 상태</span>
+        </div>
+        <div class="rail-item future">
+          <span class="stamp">2026-10 · in ~5mo</span>
+          <span class="label">가계부 · 파일 통합</span>
+        </div>
+      </div>
+    </aside>
+    </div><!-- /.with-rail -->
   </main>
 </div>
 </body>

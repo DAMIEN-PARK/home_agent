@@ -174,11 +174,17 @@
 
     <aside class="rail">
       <div class="rail-head">
-        <h2>Timeline · Log</h2>
+        <h2>Timeline · 통합</h2>
         <span class="rail-now">2026-05-16 Fri</span>
       </div>
+      <div class="rail-filter">
+        <button class="active">전체</button>
+        <button>일정</button>
+        <button>할일</button>
+        <button>완료</button>
+      </div>
       <div class="rail-body">
-        <!-- 과거 (위쪽, 흐리게) -->
+        <!-- 과거 -->
         <div class="rail-item past">
           <span class="stamp">04-30 · 16d ago</span>
           <span class="label">팀 워크샵 — 회고 노트 저장</span>
@@ -195,6 +201,18 @@
           <span class="stamp">05-08 · 8d ago</span>
           <span class="label">어버이날 — 가족 식사</span>
         </div>
+        <div class="rail-item past todo done">
+          <span class="stamp">05-10 · 6d ago</span>
+          <span class="label">레포 스캐폴딩</span>
+        </div>
+        <div class="rail-item past todo done">
+          <span class="stamp">05-12 · 4d ago</span>
+          <span class="label">도메인 스키마 분리 결정</span>
+        </div>
+        <div class="rail-item past todo done">
+          <span class="stamp">05-13 · 3d ago</span>
+          <span class="label">pgvector 확장 활성화</span>
+        </div>
         <div class="rail-item past milestone">
           <span class="stamp">05-13 · 3d ago</span>
           <span class="label">스택 결정 마감 ✓</span>
@@ -203,29 +221,45 @@
           <span class="stamp">05-14 · 2d ago</span>
           <span class="label">팀 회고</span>
         </div>
-        <div class="rail-item past warn">
-          <span class="stamp">05-15 · yesterday</span>
-          <span class="label">MVP 범위 확정 EOD</span>
+        <div class="rail-item past todo overdue">
+          <span class="stamp">05-15 EOD · yesterday</span>
+          <span class="label">MVP 범위 확정 <span class="row-tags"><span class="tag danger">P0</span></span></span>
         </div>
         <div class="rail-item past">
           <span class="stamp">05-15 12:00 · yesterday</span>
           <span class="label">점심 — 정민</span>
         </div>
 
-        <!-- 지금 (sticky) -->
+        <!-- 지금 -->
         <div class="rail-now-row">
           <span class="stamp">2026-05-16 · 지금</span>
-          <span class="label">▸ Week1 schedule 도메인 작업 중</span>
+          <span class="label">▸ 일정 에이전트 MCP 스켈레톤</span>
         </div>
 
-        <!-- 미래 (아래쪽, 점선 dot) -->
+        <!-- 미래 -->
+        <div class="rail-item future todo">
+          <span class="stamp">05-17 · in 1d</span>
+          <span class="label">오케스트레이터 라우팅 규칙 <span class="row-tags"><span class="tag">P1</span></span></span>
+        </div>
+        <div class="rail-item future todo">
+          <span class="stamp">05-18 · in 2d</span>
+          <span class="label">STACK.md 결정 항목 클로즈 <span class="row-tags"><span class="tag warn">P1</span></span></span>
+        </div>
         <div class="rail-item future">
           <span class="stamp">05-19 14:00 · in 3d</span>
           <span class="label">스택 결정 리뷰 — 정민</span>
         </div>
+        <div class="rail-item future todo">
+          <span class="stamp">05-20 · in 4d</span>
+          <span class="label">pgvector 인덱스 벤치 <span class="row-tags"><span class="tag">P2</span></span></span>
+        </div>
         <div class="rail-item future">
           <span class="stamp">05-23 18:00 · in 7d</span>
           <span class="label">부모님 식사</span>
+        </div>
+        <div class="rail-item future todo">
+          <span class="stamp">05-23 · in 7d</span>
+          <span class="label">가계부 카테고리 트리 정리 <span class="row-tags"><span class="tag">P2</span></span></span>
         </div>
         <div class="rail-item future">
           <span class="stamp">05-25 · in 9d</span>

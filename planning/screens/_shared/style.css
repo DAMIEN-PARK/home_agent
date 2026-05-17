@@ -485,7 +485,7 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
 .domain-chat .dc-suggests .dc-suggest:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-soft); }
 
 /* ---------- Kanban (TODO) ---------- */
-.kanban { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.kanban { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .kcol {
   background: var(--surface-2);
   border-radius: var(--radius);
@@ -552,6 +552,31 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
   font-size: 11px;
   color: var(--text-faint);
 }
+.rail-filter {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+  flex-wrap: wrap;
+}
+.rail-filter button {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--text-muted);
+  cursor: pointer;
+  min-width: 0;
+}
+.rail-filter button.active {
+  background: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent);
+}
 .rail-body {
   position: relative;
   overflow-y: auto;
@@ -614,6 +639,36 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
   background: var(--warning);
   border-color: var(--warning);
 }
+.rail-item.todo::before {
+  border-radius: 2px;
+  border-color: var(--text-muted);
+}
+.rail-item.todo.active::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.rail-item.todo.done::before {
+  background: var(--success);
+  border-color: var(--success);
+}
+.rail-item.todo.done .label {
+  text-decoration: line-through;
+  color: var(--text-faint);
+}
+.rail-item.todo.overdue::before {
+  background: var(--danger);
+  border-color: var(--danger);
+}
+.rail-item .row-tags {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.rail-item .row-tags .tag {
+  font-size: 10px;
+  padding: 1px 6px;
+}
 .rail-now-row {
   position: sticky;
   top: 0;
@@ -649,121 +704,6 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
 @media (max-width: 1100px) {
   .with-rail { grid-template-columns: 1fr; }
   .rail { position: static; max-height: none; }
-}
-
-/* ---------- Step rail (TODO sequence sidebar) ---------- */
-.app.with-step-rail {
-  grid-template-columns: 240px 232px 1fr;
-}
-.step-rail {
-  background: var(--surface-2);
-  border-right: 1px solid var(--border);
-  padding: 14px 12px 18px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.step-rail .sr-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: 2px 6px 10px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 6px;
-}
-.step-rail .sr-head h2 {
-  margin: 0;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-.step-rail .sr-head .sr-count {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  color: var(--text-faint);
-}
-.step-rail .sr-switch {
-  display: flex;
-  gap: 4px;
-  padding: 0 4px 8px;
-}
-.step-rail .sr-switch button {
-  flex: 1;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 3px 8px;
-  font-size: 11px;
-  font-family: var(--mono);
-  color: var(--text-muted);
-  cursor: pointer;
-}
-.step-rail .sr-switch button.active {
-  background: var(--surface);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.step-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 8px 10px 9px 12px;
-  position: relative;
-  border-left: 3px solid var(--border-strong);
-  cursor: pointer;
-}
-.step-card:hover { border-color: var(--border-strong); }
-.step-card .step-no {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text-faint);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-.step-card .step-title {
-  margin-top: 2px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.35;
-}
-.step-card .step-stamp {
-  margin-top: 4px;
-  font-family: var(--mono);
-  font-size: 10.5px;
-  color: var(--text-faint);
-}
-.step-card.active {
-  border-left-color: var(--accent);
-  background: var(--accent-soft);
-}
-.step-card.active .step-no { color: var(--accent); }
-.step-card.done { border-left-color: var(--success); opacity: 0.7; }
-.step-card.done .step-title { text-decoration: line-through; color: var(--text-faint); }
-.step-card.overdue { border-left-color: var(--danger); }
-.step-card.overdue .step-no { color: var(--danger); }
-.step-card.warn { border-left-color: var(--warning); }
-.step-card .step-tags {
-  margin-top: 5px;
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-.step-card .step-tags .tag {
-  font-size: 10px;
-  padding: 1px 6px;
-}
-
-@media (max-width: 1100px) {
-  .app.with-step-rail { grid-template-columns: 240px 1fr; }
-  .step-rail { display: none; }
 }
 
 /* ---------- Misc ---------- */
