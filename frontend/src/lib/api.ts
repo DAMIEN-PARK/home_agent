@@ -37,6 +37,20 @@ export async function postChat(message: string, userId: string): Promise<ChatRes
   return r.json() as Promise<ChatResponse>;
 }
 
+export async function postDomainChat(
+  domain: string,
+  message: string,
+  userId: string,
+): Promise<ChatResponse> {
+  const r = await fetch(`/api/chat/${domain}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...deviceHeaders() },
+    body: JSON.stringify({ message, user_id: userId }),
+  });
+  if (!r.ok) throw new Error(`domain chat failed: ${r.status}`);
+  return r.json() as Promise<ChatResponse>;
+}
+
 export async function getEvents(userId: string, from: string, to: string) {
   const q = new URLSearchParams({ user_id: userId, from, to });
   const r = await fetch(`/api/events?${q.toString()}`, {

@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { getDeviceName } from "@/lib/device";
 import Calendar from "@/pages/Calendar";
 import Chat from "@/pages/Chat";
+import Schedule from "@/pages/Schedule";
 
 export default function App() {
   const [deviceName, setDeviceNameState] = useState<string | null>(() =>
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="/" element={<Navigate to="/chat" replace />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/calendar" element={<Calendar />} />
+            <Route path="/schedule" element={<Schedule />} />
           </Routes>
         </main>
       </div>

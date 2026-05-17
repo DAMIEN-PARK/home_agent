@@ -15,8 +15,8 @@ from app.agents.todo_agent import TodoAgent
 REGISTRY: dict[str, DomainAgent] = {
     "schedule": ScheduleAgent(),
     "todo": TodoAgent(),
-    "ledger": LedgerAgent,
-    "finance": FinanceAgent,
-    "ideas": IdeasAgent,
+    "ledger": LedgerAgent(),
+    "finance": FinanceAgent(),
+    "ideas": IdeasAgent(),
     "files": FilesAgent(),
 }

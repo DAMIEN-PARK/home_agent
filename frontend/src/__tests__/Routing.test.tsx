@@ -6,6 +6,7 @@ import { describe, expect, test, vi } from "vitest";
 import { Sidebar } from "@/components/Sidebar";
 import Calendar from "@/pages/Calendar";
 import Chat from "@/pages/Chat";
+import Schedule from "@/pages/Schedule";
 
 globalThis.fetch = vi.fn(() =>
   Promise.resolve({ ok: true, json: async () => ({ events: [] }) }),
@@ -22,6 +23,7 @@ function harness(initialPath: string) {
         <Routes>
           <Route path="/chat" element={<Chat />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/schedule" element={<Schedule />} />
         </Routes>
       </MemoryRouter>
     </QueryClientProvider>
@@ -37,5 +39,13 @@ describe("routing", () => {
   test("calendar route shows month header", () => {
     render(harness("/calendar"));
     expect(screen.getByText(/년 \d+월/)).toBeInTheDocument();
+  });
+
+  test("schedule route shows domain chat region", () => {
+    render(harness("/schedule"));
+    expect(screen.getByText("schedule_agent")).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(/이 도메인에만 묻기/),
+    ).toBeInTheDocument();
   });
 });
