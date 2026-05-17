@@ -166,7 +166,7 @@
 - **Entry**: Phase 2 일부/전부 완료. Mid-gate에서 cover 안 된 mockup 9화면 + Phase 2에서 추가된 컴포넌트.
 - **결과물**: spec `docs/superpowers/specs/2026-05-17-mockup-color-tokens-mobile.md` §8.2의 V1~V7 desktop(1440) + mobile(390) 전 화면 보고서.
 - **Acceptance**:
-  - 11개 mockup + React 페이지 전부 통과
+  - 10개 mockup + React 페이지 전부 통과 (chat-v2 폐기 `cd1af51` 이후 mockup 카운트 11 → 10; MA-4 (ii) deviation note in `2026-05-18-phase-3-visual-regression-report.md` §1.1)
   - 회귀 발견 시 fix → 재검증 (mini loop)
 - **Note**: Phase 4 직후 mid-gate가 Chat/Calendar는 이미 커버. 본 phase는 mockup + Phase 2 신규 컴포넌트의 회귀 점검 책임.
 
