@@ -8,30 +8,21 @@
 <body>
 <div class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
-  <label for="nav-toggle" class="topbar-mobile">
-    <span class="topbar-burger">☰</span>
-    <span>home·agent</span>
-  </label>
-  <aside class="sidebar">
-    <div class="brand">home<span class="dot">·</span>agent</div>
-    <nav class="nav">
-      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
-      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
-      <div class="group-label">도메인</div>
-      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
-      <a href="todo.html"><span class="ic">☑</span> TODO</a>
-      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
-      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
-      <a href="ideas.html" class="active"><span class="ic">✦</span> 아이디어</a>
-      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
-      <div class="group-label">시스템</div>
-      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
-      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+  <header class="topnav">
+    <a href="index.html" class="brand">home<span class="dot">·</span>agent</a>
+    <nav class="topnav-items">
+      <a href="dashboard.html">대시보드</a>
+      <a href="chat.html">챗</a>
+      <a href="schedule.html">일정</a>
+      <a href="todo.html">TODO</a>
+      <a href="ledger.html">가계부</a>
+      <a href="finance.html">재무</a>
+      <a href="ideas.html" class="active">아이디어</a>
+      <a href="files.html">파일</a>
     </nav>
-    <div class="footer">v0.0.1 · planning mockup</div>
-    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
-  </aside>
-  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+    <a href="settings.html" class="topnav-end">설정</a>
+    <label for="nav-toggle" class="topnav-burger" aria-label="메뉴">≡</label>
+  </header>
   <main class="main">
     <div class="page-header">
       <div>
@@ -39,7 +30,7 @@
         <div class="sub">노트 작성 · 의미 검색 · 관련 노트 자동 연결</div>
       </div>
       <div class="actions">
-        <input class="btn" placeholder="🔍 의미로 검색 — 예: '오케스트레이터 라우팅 정책'" style="width:340px; cursor:text">
+        <input class="btn" placeholder="의미로 검색 — 예: '오케스트레이터 라우팅 정책'" style="width:340px; cursor:text">
         <button class="btn primary">+ 노트</button>
       </div>
     </div>

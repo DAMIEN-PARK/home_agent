@@ -8,30 +8,21 @@
 <body>
 <div class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
-  <label for="nav-toggle" class="topbar-mobile">
-    <span class="topbar-burger">☰</span>
-    <span>home·agent</span>
-  </label>
-  <aside class="sidebar">
-    <div class="brand">home<span class="dot">·</span>agent</div>
-    <nav class="nav">
-      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
-      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
-      <div class="group-label">도메인</div>
-      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
-      <a href="todo.html"><span class="ic">☑</span> TODO</a>
-      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
-      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
-      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
-      <a href="files.html" class="active"><span class="ic">▤</span> 파일 · 사진</a>
-      <div class="group-label">시스템</div>
-      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
-      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+  <header class="topnav">
+    <a href="index.html" class="brand">home<span class="dot">·</span>agent</a>
+    <nav class="topnav-items">
+      <a href="dashboard.html">대시보드</a>
+      <a href="chat.html">챗</a>
+      <a href="schedule.html">일정</a>
+      <a href="todo.html">TODO</a>
+      <a href="ledger.html">가계부</a>
+      <a href="finance.html">재무</a>
+      <a href="ideas.html">아이디어</a>
+      <a href="files.html" class="active">파일</a>
     </nav>
-    <div class="footer">v0.0.1 · planning mockup</div>
-    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
-  </aside>
-  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+    <a href="settings.html" class="topnav-end">설정</a>
+    <label for="nav-toggle" class="topnav-burger" aria-label="메뉴">≡</label>
+  </header>
   <main class="main">
     <div class="page-header">
       <div>
@@ -39,7 +30,7 @@
         <div class="sub">로컬 저장 · 메타데이터/임베딩만 Postgres · 자연어 검색</div>
       </div>
       <div class="actions">
-        <input class="btn" placeholder="🔍 자연어로 검색 — 예: '작년 가을 부모님과 찍은 사진'" style="width:380px; cursor:text">
+        <input class="btn" placeholder="자연어로 검색 — 예: '작년 가을 부모님과 찍은 사진'" style="width:380px; cursor:text">
         <button class="btn primary">⤴ 업로드</button>
       </div>
     </div>

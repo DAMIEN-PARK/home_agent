@@ -8,30 +8,21 @@
 <body>
 <div class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
-  <label for="nav-toggle" class="topbar-mobile">
-    <span class="topbar-burger">☰</span>
-    <span>home·agent</span>
-  </label>
-  <aside class="sidebar">
-    <div class="brand">home<span class="dot">·</span>agent</div>
-    <nav class="nav">
-      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
-      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
-      <div class="group-label">도메인</div>
-      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
-      <a href="todo.html" class="active"><span class="ic">☑</span> TODO</a>
-      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
-      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
-      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
-      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
-      <div class="group-label">시스템</div>
-      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
-      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+  <header class="topnav">
+    <a href="index.html" class="brand">home<span class="dot">·</span>agent</a>
+    <nav class="topnav-items">
+      <a href="dashboard.html">대시보드</a>
+      <a href="chat.html">챗</a>
+      <a href="schedule.html">일정</a>
+      <a href="todo.html" class="active">TODO</a>
+      <a href="ledger.html">가계부</a>
+      <a href="finance.html">재무</a>
+      <a href="ideas.html">아이디어</a>
+      <a href="files.html">파일</a>
     </nav>
-    <div class="footer">v0.0.1 · planning mockup</div>
-    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
-  </aside>
-  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+    <a href="settings.html" class="topnav-end">설정</a>
+    <label for="nav-toggle" class="topnav-burger" aria-label="메뉴">≡</label>
+  </header>
 
   <main class="main">
     <div class="page-header">

@@ -63,7 +63,8 @@
 
   /* 중간 폭(1024 이하)에서 chat-side 숨김 — 820px 모바일 breakpoint(_shared)보다 먼저 발동 */
   @media (max-width: 1024px) {
-    .chat-wrap { grid-template-columns: 1fr; }
+    .chat-wrap { grid-template-columns: 240px 1fr; }
+    .chat-wrap:has(.history-toggle:checked) { grid-template-columns: 1fr; }
     .chat-side { display: none; }
   }
 </style>
@@ -71,30 +72,21 @@
 <body>
 <div class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
-  <label for="nav-toggle" class="topbar-mobile">
-    <span class="topbar-burger">☰</span>
-    <span>home·agent</span>
-  </label>
-  <aside class="sidebar">
-    <div class="brand">home<span class="dot">·</span>agent</div>
-    <nav class="nav">
-      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
-      <a href="chat.html" class="active"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
-      <div class="group-label">도메인</div>
-      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
-      <a href="todo.html"><span class="ic">☑</span> TODO</a>
-      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
-      <a href="finance.html"><span class="ic">↗</span> 재무 · 자산</a>
-      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
-      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
-      <div class="group-label">시스템</div>
-      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
-      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+  <header class="topnav">
+    <a href="index.html" class="brand">home<span class="dot">·</span>agent</a>
+    <nav class="topnav-items">
+      <a href="dashboard.html">대시보드</a>
+      <a href="chat.html" class="active">챗</a>
+      <a href="schedule.html">일정</a>
+      <a href="todo.html">TODO</a>
+      <a href="ledger.html">가계부</a>
+      <a href="finance.html">재무</a>
+      <a href="ideas.html">아이디어</a>
+      <a href="files.html">파일</a>
     </nav>
-    <div class="footer">v0.0.1 · planning mockup</div>
-    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
-  </aside>
-  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+    <a href="settings.html" class="topnav-end">설정</a>
+    <label for="nav-toggle" class="topnav-burger" aria-label="메뉴">≡</label>
+  </header>
 
   <main class="main">
     <div class="page-header">
@@ -109,7 +101,40 @@
     </div>
 
     <div class="chat-wrap">
+      <input type="checkbox" id="history-toggle" class="history-toggle" hidden>
+
+      <aside class="chat-history">
+        <div class="chat-history-head">
+          <span>대화 기록</span>
+          <label for="history-toggle" class="chat-history-collapse" aria-label="기록 접기" title="접기">‹</label>
+        </div>
+        <button class="btn chat-history-new">+ 새 대화</button>
+        <input class="chat-history-search" placeholder="대화 검색">
+        <div class="chat-history-list">
+          <div class="chat-history-section">오늘</div>
+          <a href="#" class="chat-history-item active">다음주 화 미팅 + 5월 식비</a>
+          <a href="#" class="chat-history-item">MVP 범위 EOD 우선순위</a>
+          <a href="#" class="chat-history-item">pgvector 인덱스 옵션</a>
+
+          <div class="chat-history-section">어제</div>
+          <a href="#" class="chat-history-item">5월 식비 카테고리별 분석</a>
+          <a href="#" class="chat-history-item">출장 일정 정리</a>
+
+          <div class="chat-history-section">이번 주</div>
+          <a href="#" class="chat-history-item">가계부 카테고리 트리 재편</a>
+          <a href="#" class="chat-history-item">부모님 식사 예약 후보</a>
+          <a href="#" class="chat-history-item">5월 회고 노트 정리</a>
+
+          <div class="chat-history-section">이전</div>
+          <a href="#" class="chat-history-item">스택 결정 회고</a>
+          <a href="#" class="chat-history-item">오케스트레이터 라우팅 v1</a>
+          <a href="#" class="chat-history-item">MCP 서버 분리 vs 통합</a>
+          <a href="#" class="chat-history-item">Postgres + pgvector 도입 결정</a>
+        </div>
+      </aside>
+
       <div class="chat-main">
+        <label for="history-toggle" class="chat-history-expand" aria-label="기록 열기" title="기록 열기">›</label>
         <div class="chat-thread" id="thread">
           <div class="msg user">
             <div class="who">YOU · 09:14</div>

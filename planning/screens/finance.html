@@ -8,30 +8,21 @@
 <body>
 <div class="app">
   <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
-  <label for="nav-toggle" class="topbar-mobile">
-    <span class="topbar-burger">☰</span>
-    <span>home·agent</span>
-  </label>
-  <aside class="sidebar">
-    <div class="brand">home<span class="dot">·</span>agent</div>
-    <nav class="nav">
-      <a href="dashboard.html"><span class="ic">▦</span> 대시보드</a>
-      <a href="chat.html"><span class="ic">◐</span> 챗 (오케스트레이터)</a>
-      <div class="group-label">도메인</div>
-      <a href="schedule.html"><span class="ic">▣</span> 일정 · 비전</a>
-      <a href="todo.html"><span class="ic">☑</span> TODO</a>
-      <a href="ledger.html"><span class="ic">₩</span> 가계부</a>
-      <a href="finance.html" class="active"><span class="ic">↗</span> 재무 · 자산</a>
-      <a href="ideas.html"><span class="ic">✦</span> 아이디어</a>
-      <a href="files.html"><span class="ic">▤</span> 파일 · 사진</a>
-      <div class="group-label">시스템</div>
-      <a href="settings.html"><span class="ic">⚙</span> 설정</a>
-      <a href="index.html"><span class="ic">↩</span> 화면 인덱스</a>
+  <header class="topnav">
+    <a href="index.html" class="brand">home<span class="dot">·</span>agent</a>
+    <nav class="topnav-items">
+      <a href="dashboard.html">대시보드</a>
+      <a href="chat.html">챗</a>
+      <a href="schedule.html">일정</a>
+      <a href="todo.html">TODO</a>
+      <a href="ledger.html">가계부</a>
+      <a href="finance.html" class="active">재무</a>
+      <a href="ideas.html">아이디어</a>
+      <a href="files.html">파일</a>
     </nav>
-    <div class="footer">v0.0.1 · planning mockup</div>
-    <label for="nav-toggle" class="sidebar-close" aria-label="닫기">✕</label>
-  </aside>
-  <label for="nav-toggle" class="nav-backdrop" aria-hidden="true"></label>
+    <a href="settings.html" class="topnav-end">설정</a>
+    <label for="nav-toggle" class="topnav-burger" aria-label="메뉴">≡</label>
+  </header>
   <main class="main">
     <div class="page-header">
       <div>
@@ -88,15 +79,15 @@
       <div class="card">
         <h2>자산 배분</h2>
         <div style="display:flex; height:18px; border-radius:6px; overflow:hidden; margin:10px 0 16px">
-          <div style="flex:53.6; background:#4f46e5"></div>
-          <div style="flex:32.3; background:#7c3aed"></div>
-          <div style="flex:8.0; background:#a855f7"></div>
-          <div style="flex:2.3; background:#c084fc"></div>
-          <div style="flex:3.8; background:#e9d5ff"></div>
+          <div style="flex:53.6; background:var(--text-faint)"></div>
+          <div style="flex:32.3; background:var(--accent)"></div>
+          <div style="flex:8.0; background:var(--text-muted)"></div>
+          <div style="flex:2.3; background:var(--border-strong)"></div>
+          <div style="flex:3.8; background:var(--surface-2)"></div>
         </div>
         <ul class="list">
-          <li><span class="tag" style="background:#eef2ff; color:#4f46e5">현금/예금 53.6%</span> <span class="meta">₩28,100k · 목표 30%</span></li>
-          <li><span class="tag" style="background:#f3e8ff; color:#7c3aed">주식 소계 40.3%</span> <span class="meta">₩21,120k · 목표 60%</span></li>
+          <li><span class="tag">현금/예금 53.6%</span> <span class="meta">₩28,100k · 목표 30%</span></li>
+          <li><span class="tag accent">주식 소계 40.3%</span> <span class="meta">₩21,120k · 목표 60%</span></li>
           <li style="padding-left:18px"><span class="faint">↳ 해외주식 32.3%</span> <span class="meta">₩16,920k</span></li>
           <li style="padding-left:18px"><span class="faint">↳ 국내주식 8.0%</span> <span class="meta">₩4,200k</span></li>
           <li><span class="tag">CMA 2.3%</span> <span class="meta">₩1,200k</span></li>

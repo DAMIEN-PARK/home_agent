@@ -16,7 +16,7 @@
   --danger: #dc2626;
   --radius: 10px;
   --radius-sm: 6px;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: none;
   --shadow: 0 4px 16px rgba(0,0,0,0.06);
   --mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard", Roboto, "Apple SD Gothic Neo", sans-serif;
@@ -57,71 +57,82 @@ a:hover { text-decoration: underline; }
 
 /* ---------- Layout ---------- */
 .app {
-  display: grid;
-  grid-template-columns: 240px 1fr;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-.sidebar {
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 18px 14px;
+/* ---------- Top navigation (Apple-style sticky bar) ---------- */
+.topnav {
   position: sticky;
   top: 0;
-  height: 100vh;
+  z-index: 30;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  height: 48px;
+  padding: 0 22px;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+          backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
 }
-
 .brand {
   font-family: var(--mono);
-  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text);
-  padding: 4px 8px 14px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 .brand .dot { color: var(--accent); }
+.brand:hover { text-decoration: none; }
 
-.nav {
+.topnav-items {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.nav a {
-  display: flex;
+  gap: 22px;
+  flex: 1;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
+}
+.topnav-items a,
+.topnav-end {
+  color: var(--text-muted);
+  padding: 0 2px;
+  transition: color 120ms ease;
+}
+.topnav-items a:hover,
+.topnav-end:hover {
   color: var(--text);
-  border-radius: var(--radius-sm);
-  font-size: 13.5px;
+  text-decoration: none;
 }
-.nav a:hover { background: var(--surface-2); text-decoration: none; }
-.nav a.active { background: var(--accent-soft); color: var(--accent); }
-.nav a .ic { width: 18px; text-align: center; font-size: 14px; }
-.nav .group-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  letter-spacing: 0.08em;
-  padding: 12px 10px 4px;
+.topnav-items a.active,
+.topnav-end.active {
+  color: var(--text);
+}
+.topnav-end {
+  flex-shrink: 0;
 }
 
-.sidebar .footer {
-  margin-top: auto;
-  font-size: 11px;
-  color: var(--text-faint);
-  padding: 10px;
-  font-family: var(--mono);
+.topnav-burger {
+  display: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 18px;
+  color: var(--text);
+  line-height: 1;
+  user-select: none;
 }
 
+/* Legacy helpers (sidebar drawer) — hidden in top-nav layout */
+.nav-toggle, .sidebar-close, .nav-backdrop, .topbar-mobile, .sidebar { display: none; }
+
+/* ---------- Main ---------- */
 .main {
   padding: 28px 36px 60px;
   max-width: 1280px;
   width: 100%;
+  margin: 0 auto;
 }
 
 .page-header {
@@ -253,9 +264,6 @@ ul.list .meta { margin-left: auto; color: var(--text-faint); font-family: var(--
 .card.stat.dom-ideas    { border-left: 4px solid var(--domain-ideas); }
 .card.stat.dom-files    { border-left: 4px solid var(--domain-files); }
 
-/* Mobile drawer — hidden by default on desktop */
-.nav-toggle, .topbar-mobile, .sidebar-close, .nav-backdrop { display: none; }
-
 /* ---------- Tables ---------- */
 table.tbl {
   width: 100%;
@@ -296,10 +304,134 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
 /* ---------- Chat ---------- */
 .chat-wrap {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 240px 1fr 320px;
   gap: 16px;
   height: calc(100vh - 140px);
+  transition: grid-template-columns .2s ease;
 }
+.chat-wrap:has(.history-toggle:checked) {
+  grid-template-columns: 1fr 320px;
+}
+.history-toggle:checked ~ .chat-history {
+  display: none;
+}
+
+/* ---------- Chat history sidebar (collapsible) ---------- */
+.chat-history {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+.chat-history-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.chat-history-collapse {
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  user-select: none;
+}
+.chat-history-collapse:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.chat-history-new {
+  margin: 10px 10px 6px;
+  justify-content: center;
+}
+.chat-history-search {
+  margin: 0 10px 4px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  background: var(--surface-2);
+  font-family: inherit;
+  color: var(--text);
+}
+.chat-history-search:focus {
+  outline: 2px solid var(--accent-soft);
+  border-color: var(--accent);
+  background: var(--surface);
+}
+.chat-history-list {
+  overflow-y: auto;
+  padding-bottom: 10px;
+  flex: 1;
+}
+.chat-history-section {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  padding: 12px 16px 4px;
+  font-family: var(--mono);
+}
+.chat-history-item {
+  display: block;
+  padding: 7px 12px;
+  margin: 0 6px;
+  font-size: 13px;
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chat-history-item:hover {
+  background: var(--surface-2);
+  text-decoration: none;
+}
+.chat-history-item.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Re-open button (visible only when history is collapsed) */
+.chat-history-expand {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  cursor: pointer;
+  padding: 4px 9px;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  user-select: none;
+}
+.chat-history-expand:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+.chat-wrap:has(.history-toggle:checked) .chat-history-expand {
+  display: inline-flex;
+}
+.chat-wrap:has(.history-toggle:checked) .chat-thread {
+  padding-top: 48px;
+}
+
 .chat-main {
   display: flex;
   flex-direction: column;
@@ -307,6 +439,7 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  position: relative;
 }
 .chat-thread {
   flex: 1;
@@ -754,55 +887,41 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
 .rail-now-row .label { color: var(--accent); font-weight: 600; font-size: 12px; }
 
 /* ───── Mobile (≤820px) ─────────────────────────────────────
-   Single breakpoint, JS-free drawer via checkbox hack.
-   See: docs/superpowers/specs/2026-05-17-mockup-color-tokens-mobile.md
+   Single breakpoint. Top-nav items collapse into a drop-down
+   beneath the bar via JS-free checkbox hack on #nav-toggle.
    ──────────────────────────────────────────────────────────── */
 @media (max-width: 820px) {
-  /* Layout single column */
-  .app {
-    grid-template-columns: 1fr;
-    grid-template-areas: "topbar" "main";
+  .topnav {
+    flex-wrap: wrap;
+    padding: 0 14px;
+    gap: 14px;
+    height: auto;
+    min-height: 48px;
   }
-
-  /* Topbar (label-as-button toggles checkbox) */
-  .topbar-mobile {
-    display: flex; align-items: center; gap: 12px;
-    grid-area: topbar;
-    padding: 12px 16px;
+  .topnav-burger { display: inline-block; }
+  .brand { margin-right: auto; }
+  .topnav-end {
+    order: 2;
+  }
+  .topnav-items {
+    order: 3;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    display: none;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    padding: 8px 0 10px;
     background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono); font-size: 14px;
-    cursor: pointer;
-    position: sticky; top: 0; z-index: 25;
   }
-  .topbar-burger { font-size: 18px; }
-  .main { grid-area: main; padding: 16px; max-width: 100%; }
+  .topnav-items a {
+    padding: 10px 6px;
+    text-align: left;
+  }
+  .nav-toggle:checked ~ .topnav .topnav-items { display: flex; }
 
-  /* Sidebar → fixed off-canvas drawer */
-  .sidebar {
-    position: fixed; top: 0; left: 0; bottom: 0;
-    width: 260px; height: 100vh;
-    transform: translateX(-100%);
-    transition: transform .18s ease;
-    z-index: 40;
-    box-shadow: var(--shadow);
-  }
-  .sidebar-close {
-    display: block; position: absolute; top: 12px; right: 12px;
-    font-size: 18px; color: var(--text-muted); cursor: pointer;
-    background: transparent; border: 0; padding: 4px 8px;
-  }
-
-  /* Backdrop (label-as-button closes drawer on click) */
-  .nav-backdrop {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0, 0, 0, .35); z-index: 35;
-    cursor: pointer;
-  }
-
-  /* Checkbox-hack: when checked, drawer slides in + backdrop shows */
-  .nav-toggle:checked ~ .sidebar { transform: translateX(0); }
-  .nav-toggle:checked ~ .nav-backdrop { display: block; }
+  .main { padding: 16px; max-width: 100%; }
 
   /* Grid columns collapse */
   .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
@@ -811,8 +930,10 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
   .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
   .page-header .actions { width: 100%; flex-wrap: wrap; }
 
-  /* Chat + rail single column (was 1100px breakpoint, now unified) */
+  /* Chat + rail single column */
   .chat-wrap, .with-rail { grid-template-columns: 1fr; height: auto; }
+  .chat-history { display: none; }
+  .chat-history-expand { display: none !important; }
   .rail { position: static; max-height: none; }
 
   /* Kanban single column */
