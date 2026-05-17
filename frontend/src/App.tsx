@@ -1,10 +1,21 @@
+import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
+import { DeviceSetup } from "@/components/DeviceSetup";
 import { Sidebar } from "@/components/Sidebar";
+import { getDeviceName } from "@/lib/device";
 import Calendar from "@/pages/Calendar";
 import Chat from "@/pages/Chat";
 
 export default function App() {
+  const [deviceName, setDeviceNameState] = useState<string | null>(() =>
+    getDeviceName(),
+  );
+
+  if (!deviceName) {
+    return <DeviceSetup onSaved={setDeviceNameState} />;
+  }
+
   return (
     <BrowserRouter>
       <div className="flex">

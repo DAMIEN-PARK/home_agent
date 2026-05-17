@@ -29,6 +29,7 @@ services:
       DEBUG: "true"
       DATABASE_URL: postgresql+asyncpg://home_agent:home_agent@postgres:5432/home_agent
       CORS_ORIGINS: '["http://localhost:5173"]'
+      CORS_ORIGIN_REGEX: '^http://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3}|[a-zA-Z0-9-]+\.local):(5173|8000)$'
     ports:
       - "8000:8000"
     volumes:
