@@ -23,6 +23,9 @@ node_modules/
 .vite/
 *.tsbuildinfo
 
+# Domain-chat file attachments (saved by FilesAgent under backend volume)
+backend/data/
+
 # IDE / OS
 .idea/
 .vscode/

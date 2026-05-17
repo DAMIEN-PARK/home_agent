@@ -19,7 +19,7 @@ async def test_post_chat_creates_event(app_client: AsyncClient, test_user):
         "final_text": "회의 잡았어요.",
     }
     with patch(
-        "app.agents.orchestrator._call_llm",
+        "app.agents.orchestrator.call_llm",
         new=AsyncMock(return_value=fake_response),
     ):
         resp = await app_client.post(

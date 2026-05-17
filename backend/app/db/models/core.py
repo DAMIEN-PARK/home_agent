@@ -31,6 +31,15 @@ class Session(Base, TimestampMixin):
     )
     title: Mapped[str | None] = mapped_column(String(255), nullable=True)
     ended_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # LAN device that owns this chat thread. device_id is the localStorage UUID,
+    # device_name is user-set (e.g. "데스크탑", "노트북-거실").
+    device_id: Mapped[UUID | None] = mapped_column(PG_UUID(as_uuid=True), nullable=True)
+    device_name: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    # Conversation scope. "orchestrator" = main chat; otherwise a domain agent
+    # chat (schedule / todo / ledger / finance / ideas / files).
+    scope: Mapped[str] = mapped_column(
+        String(32), nullable=False, default="orchestrator", server_default="orchestrator"
+    )
 
     user: Mapped[User] = relationship(back_populates="sessions")
     messages: Mapped[list["Message"]] = relationship(

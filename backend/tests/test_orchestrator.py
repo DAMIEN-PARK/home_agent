@@ -22,7 +22,7 @@ async def test_run_turn_dispatches_create_event(db_session, test_user):
     }
 
     with patch(
-        "app.agents.orchestrator._call_llm",
+        "app.agents.orchestrator.call_llm",
         new=AsyncMock(return_value=fake_llm_response),
     ):
         result = await run_turn(

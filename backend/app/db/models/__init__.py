@@ -1,4 +1,5 @@
 from app.db.models.core import AgentRun, Message, Session, User
+from app.db.models.files import Attachment
 from app.db.models.memory import MemoryEntry
 from app.db.models.schedule import Event
 from app.db.models.todo import Project, Task, TaskContext
@@ -13,4 +14,5 @@ __all__ = [
     "Project",
     "Task",
     "TaskContext",
+    "Attachment",
 ]
