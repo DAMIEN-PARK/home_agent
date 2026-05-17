@@ -10,6 +10,16 @@ export interface EventDto {
   description: string | null;
 }
 
+export interface ToolCallOut {
+  name: string;
+  result: Record<string, unknown>;
+}
+
+export interface ChatResponse {
+  assistant_message: string;
+  tool_calls: ToolCallOut[];
+}
+
 function deviceHeaders(): Record<string, string> {
   const h: Record<string, string> = { "X-Device-Id": getDeviceId() };
   const name = getDeviceName();
@@ -17,17 +27,14 @@ function deviceHeaders(): Record<string, string> {
   return h;
 }
 
-export async function postChat(message: string, userId: string) {
+export async function postChat(message: string, userId: string): Promise<ChatResponse> {
   const r = await fetch("/api/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json", ...deviceHeaders() },
     body: JSON.stringify({ message, user_id: userId }),
   });
   if (!r.ok) throw new Error(`chat failed: ${r.status}`);
-  return r.json() as Promise<{
-    assistant_message: string;
-    tool_calls: unknown[];
-  }>;
+  return r.json() as Promise<ChatResponse>;
 }
 
 export async function getEvents(userId: string, from: string, to: string) {

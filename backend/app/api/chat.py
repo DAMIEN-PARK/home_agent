@@ -3,30 +3,19 @@ from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.files_agent import FilesAgent
 from app.agents.orchestrator import run_turn as orchestrator_run_turn
 from app.agents.registry import REGISTRY
+from app.api.schemas.chat import ChatResponse
 from app.db.models import Attachment, Message, Session, User
 from app.db.session import get_session
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
 _files = FilesAgent()
-
-
-class ChatRequest(BaseModel):
-    message: str
-    user_id: UUID
-    session_id: UUID | None = None
-
-
-class ChatResponse(BaseModel):
-    assistant_message: str
-    tool_calls: list[dict]
 
 
 class _ParsedInput:
