@@ -436,6 +436,13 @@ table.tbl td.num, table.tbl th.num { text-align: right; font-family: var(--mono)
   flex-direction: column;
   overflow: hidden;
 }
+/* Domain-scoped left accent — visually separates 도메인 챗 from the main orchestrator chat */
+.domain-chat.dom-schedule { border-left: 4px solid var(--domain-schedule); }
+.domain-chat.dom-todo     { border-left: 4px solid var(--domain-todo); }
+.domain-chat.dom-ledger   { border-left: 4px solid var(--domain-ledger); }
+.domain-chat.dom-finance  { border-left: 4px solid var(--domain-finance); }
+.domain-chat.dom-ideas    { border-left: 4px solid var(--domain-ideas); }
+.domain-chat.dom-files    { border-left: 4px solid var(--domain-files); }
 .domain-chat .dc-header {
   display: flex;
   align-items: center;
