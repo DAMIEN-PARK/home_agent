@@ -59,3 +59,25 @@ export async function getEvents(userId: string, from: string, to: string) {
   if (!r.ok) throw new Error(`events failed: ${r.status}`);
   return r.json() as Promise<{ events: EventDto[] }>;
 }
+
+export interface TaskDto {
+  id: string;
+  title: string;
+  status: string;
+  priority: number;
+  due_at: string | null;
+  completed_at: string | null;
+  source?: string;
+  sync_state?: string | null;
+}
+
+export async function getTasks(status?: string): Promise<TaskDto[]> {
+  const q = new URLSearchParams();
+  if (status) q.set("status", status);
+  const qs = q.toString();
+  const r = await fetch(`/api/todo/tasks${qs ? "?" + qs : ""}`, {
+    headers: deviceHeaders(),
+  });
+  if (!r.ok) throw new Error(`tasks failed: ${r.status}`);
+  return r.json() as Promise<TaskDto[]>;
+}

@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { getDeviceName } from "@/lib/device";
 import Calendar from "@/pages/Calendar";
 import Chat from "@/pages/Chat";
+import Dashboard from "@/pages/Dashboard";
 import Schedule from "@/pages/Schedule";
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/chat" element={<Chat />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/schedule" element={<Schedule />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
       </div>

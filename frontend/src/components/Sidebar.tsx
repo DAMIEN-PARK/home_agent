@@ -16,6 +16,9 @@ export function Sidebar() {
       <NavLink to="/schedule" className={navItemClass}>
         ◆ 일정
       </NavLink>
+      <NavLink to="/dashboard" className={navItemClass}>
+        ▦ 대시보드
+      </NavLink>
     </aside>
   );
 }

@@ -6,6 +6,7 @@ import { describe, expect, test, vi } from "vitest";
 import { Sidebar } from "@/components/Sidebar";
 import Calendar from "@/pages/Calendar";
 import Chat from "@/pages/Chat";
+import Dashboard from "@/pages/Dashboard";
 import Schedule from "@/pages/Schedule";
 
 globalThis.fetch = vi.fn(() =>
@@ -24,6 +25,7 @@ function harness(initialPath: string) {
           <Route path="/chat" element={<Chat />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/schedule" element={<Schedule />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </MemoryRouter>
     </QueryClientProvider>
@@ -47,5 +49,10 @@ describe("routing", () => {
     expect(
       screen.getByPlaceholderText(/이 도메인에만 묻기/),
     ).toBeInTheDocument();
+  });
+
+  test("dashboard route shows charts heading", () => {
+    render(harness("/dashboard"));
+    expect(screen.getByText("대시보드")).toBeInTheDocument();
   });
 });
